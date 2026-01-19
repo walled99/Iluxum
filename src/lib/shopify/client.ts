@@ -59,6 +59,28 @@ export const getProductByHandleQuery = `
       handle
       description
       availableForSale
+      options {
+        id
+        name
+        values
+      }
+      variants(first: 250) {
+        edges {
+          node {
+            id
+            title
+            availableForSale
+            selectedOptions {
+              name
+              value
+            }
+            price {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
       images(first: 5) {
         edges {
           node {
@@ -66,6 +88,10 @@ export const getProductByHandleQuery = `
             altText
           }
         }
+      }
+      featuredImage {
+        url
+        altText
       }
       priceRange {
         minVariantPrice {
@@ -184,3 +210,40 @@ export const getCustomerCartQuery = `
     }
   }
 `;
+
+export const predictiveSearchQuery = `
+  query predictiveSearch($query: String!) {
+    predictiveSearch(query: $query, types: [PRODUCT, COLLECTION]) {
+      products {
+        id
+        title
+        handle
+        featuredImage {
+          url
+          altText
+        }
+        priceRange {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+        }
+      }
+      collections {
+        id
+        title
+        handle
+      }
+    }
+  }
+`;
+
+export async function getPredictiveSearch(query: string): Promise<any> {
+  const res = await shopifyFetch<any>({
+    query: predictiveSearchQuery,
+    variables: { query },
+    cache: 'no-store'
+  });
+
+  return res.body.data.predictiveSearch;
+}
