@@ -41,4 +41,4 @@ Iluxum is a luxury e-commerce storefront built with Next.js 16 (App Router), Tai
 - `src/lib/shopify/types.ts`: TypeScript interfaces for Shopify objects (Product, Variant, Cart).
 
 ## Current Status
-Project initialized, i18n/RTL support implemented, Shopify Headless Client configured with robust type safety (TypeScript interfaces).
+Project initialized, i18n/RTL support implemented, Shopify Headless Client configured with robust type safety, and Persistent Cart Store (Zustand v5) implemented.
