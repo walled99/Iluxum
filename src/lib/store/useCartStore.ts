@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { Product, ProductVariant } from '../shopify/types';
+import { syncCartWithServer } from '../shopify/cart';
 
 export interface LocalCartLine {
   id: string; // This will be the variant ID
@@ -15,12 +16,13 @@ interface CartState {
   addItem: (variant: ProductVariant, product: Pick<Product, 'id' | 'title' | 'handle' | 'featuredImage'>) => void;
   removeItem: (variantId: string) => void;
   updateQuantity: (variantId: string, quantity: number) => void;
+  syncCart: (serverCartId: string | null) => Promise<string>;
   clearCart: () => void;
 }
 
 export const useCartStore = create<CartState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       lines: [],
       addItem: (variant, product) =>
         set((state) => {
@@ -60,6 +62,11 @@ export const useCartStore = create<CartState>()(
             line.id === variantId ? { ...line, quantity } : line
           ),
         })),
+      syncCart: async (serverCartId) => {
+        const cartId = await syncCartWithServer(get().lines, serverCartId);
+        set({ lines: [] });
+        return cartId;
+      },
       clearCart: () => set({ lines: [] }),
     }),
     {

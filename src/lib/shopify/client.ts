@@ -90,3 +90,79 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
 
   return res.body.data.product;
 }
+
+export const getCartQuery = `
+  query getCart($cartId: ID!) {
+    cart(id: $cartId) {
+      id
+      checkoutUrl
+      cost {
+        subtotalAmount { amount currencyCode }
+        totalAmount { amount currencyCode }
+        totalTaxAmount { amount currencyCode }
+      }
+      lines(first: 100) {
+        edges {
+          node {
+            id
+            quantity
+            merchandise {
+              ... on ProductVariant {
+                id
+                title
+                product {
+                  id
+                  title
+                  handle
+                }
+              }
+            }
+          }
+        }
+      }
+      totalQuantity
+    }
+  }
+`;
+
+export const createCartMutation = `
+  mutation cartCreate($input: CartInput) {
+    cartCreate(input: $input) {
+      cart {
+        id
+        checkoutUrl
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const cartLinesAddMutation = `
+  mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+    cartLinesAdd(cartId: $cartId, lines: $lines) {
+      cart {
+        id
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const getCustomerCartQuery = `
+  query getCustomer($customerAccessToken: String!) {
+    customer(customerAccessToken: $customerAccessToken) {
+      id
+      email
+      lastIncompleteCheckout {
+        id
+        webUrl
+      }
+    }
+  }
+`;

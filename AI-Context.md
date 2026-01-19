@@ -38,7 +38,8 @@ Iluxum is a luxury e-commerce storefront built with Next.js 16 (App Router), Tai
 - `src/components/i18n/DirProvider.tsx`: RTL/LTR directionality provider.
 - `src/app/[locale]/layout.tsx`: Localized layout with directionality injection.
 - `src/lib/shopify/client.ts`: GraphQL client with standard fetcher and product queries.
+- `src/lib/store/useCartStore.ts`: Persistent store with Auth-phase sync logic.
 - `src/lib/shopify/types.ts`: TypeScript interfaces for Shopify objects (Product, Variant, Cart).
 
 ## Current Status
-Project initialized, i18n/RTL support implemented, Shopify Headless Client configured with robust type safety, and Persistent Cart Store (Zustand v5) implemented.
+Project initialized, i18n/RTL support implemented, Shopify Headless Client and Persistent Cart Store with Auth-phase merging logic complete.
