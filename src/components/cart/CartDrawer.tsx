@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useCartStore } from "@/lib/store/useCartStore";
+import { getCheckoutUrlAction } from "@/lib/shopify/actions";
 import {
   Sheet,
   SheetContent,
@@ -11,10 +13,22 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Plus, Minus, Trash2, ShoppingBag } from "lucide-react";
+import { Plus, Minus, Trash2, ShoppingBag, Loader2 } from "lucide-react";
 
 export function CartDrawer() {
-  const { lines, isCartOpen, setCartOpen, updateQuantity, removeItem } = useCartStore();
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const { lines, isCartOpen, setCartOpen, updateQuantity, removeItem, shopifyCartId } = useCartStore();
+
+  const handleCheckout = async () => {
+    setIsRedirecting(true);
+    try {
+      const checkoutUrl = await getCheckoutUrlAction(lines, shopifyCartId);
+      window.location.href = checkoutUrl;
+    } catch (error) {
+      console.error("Checkout failed:", error);
+      setIsRedirecting(false);
+    }
+  };
 
   const total = lines.reduce(
     (acc, line) => acc + parseFloat(line.merchandise.price.amount) * line.quantity,
@@ -101,8 +115,13 @@ export function CartDrawer() {
                   }).format(total)}
                 </span>
               </div>
-              <Button className="w-full bg-primary text-background h-12 rounded-none font-body text-sm uppercase tracking-[0.2em] hover:bg-primary/90 transition-all">
-                Checkout
+              <Button 
+                onClick={handleCheckout}
+                disabled={isRedirecting}
+                className="w-full bg-primary text-background h-12 rounded-none font-body text-sm uppercase tracking-[0.2em] hover:bg-primary/90 transition-all flex items-center justify-center gap-2"
+              >
+                {isRedirecting && <Loader2 className="w-4 h-4 animate-spin" />}
+                {isRedirecting ? "Connecting..." : "Checkout"}
               </Button>
               <p className="text-[10px] text-center text-ink/40 font-body">
                 Shipping and taxes calculated at checkout

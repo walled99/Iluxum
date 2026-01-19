@@ -61,3 +61,9 @@ export async function syncCartWithServer(localLines: LocalCartLine[], serverCart
 
   return cartId;
 }
+
+export async function getCheckoutUrl(localLines: LocalCartLine[], serverCartId: string | null) {
+  const cartId = await syncCartWithServer(localLines, serverCartId);
+  const cart = await getCart(cartId);
+  return cart.checkoutUrl;
+}

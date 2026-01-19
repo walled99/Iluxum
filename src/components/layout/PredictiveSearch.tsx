@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { getPredictiveSearch } from "@/lib/shopify/client";
+import { getPredictiveSearchAction } from "@/lib/shopify/actions";
 import { Input } from "@/components/ui/input";
 import { Search, Loader2, X } from "lucide-react";
 import Link from "next/link";
@@ -21,7 +21,7 @@ export function PredictiveSearch() {
     const timer = setTimeout(async () => {
       if (query.length > 2) {
         setLoading(true);
-        const searchResults = await getPredictiveSearch(query);
+        const searchResults = await getPredictiveSearchAction(query);
         setResults(searchResults);
         setLoading(false);
         setIsOpen(true);

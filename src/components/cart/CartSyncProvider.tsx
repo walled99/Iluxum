@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useCartStore } from "@/lib/store/useCartStore";
-import { syncCartWithServer } from "@/lib/shopify/cart";
+import { syncCartAction } from "@/lib/shopify/actions";
 
 export function CartSyncProvider({ 
   customerAccessToken 
@@ -19,7 +19,7 @@ export function CartSyncProvider({
         isSyncing.current = true;
         try {
           console.log("Syncing local cart with server...");
-          const newCartId = await syncCartWithServer(lines, shopifyCartId);
+          const newCartId = await syncCartAction(lines, shopifyCartId);
           setShopifyCartId(newCartId);
           clearCart(); // Clear local lines after successful sync
           console.log("Cart sync successful. Server Cart ID:", newCartId);

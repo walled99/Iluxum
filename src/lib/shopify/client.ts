@@ -1,4 +1,4 @@
-import { Product } from './types';
+import { Connection, Product } from './types';
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN;
 const endpoint = `https://${domain}/api/2024-01/graphql.json`;
@@ -246,4 +246,84 @@ export async function getPredictiveSearch(query: string): Promise<any> {
   });
 
   return res.body.data.predictiveSearch;
+}
+
+export const getSearchResultsQuery = `
+  query getSearchResults($query: String!) {
+    search(query: $query, first: 20, types: PRODUCT) {
+      edges {
+        node {
+          ... on Product {
+            id
+            title
+            handle
+            featuredImage {
+              url
+              altText
+            }
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export async function getSearchResults(query: string): Promise<Product[]> {
+  const res = await shopifyFetch<{ search: Connection<Product> }>({
+    query: getSearchResultsQuery,
+    variables: { query },
+    cache: 'no-store'
+  });
+
+  return res.body.data.search.edges.map((edge: { node: Product }) => edge.node);
+}
+
+export const getCollectionQuery = `
+  query getCollection($handle: String!) {
+    collection(handle: $handle) {
+      id
+      title
+      handle
+      description
+      image {
+        url
+        altText
+      }
+      products(first: 20) {
+        edges {
+          node {
+            id
+            title
+            handle
+            featuredImage {
+              url
+              altText
+            }
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export async function getCollection(handle: string): Promise<any> {
+  const res = await shopifyFetch<any>({
+    query: getCollectionQuery,
+    variables: { handle },
+    tags: ['products']
+  });
+
+  return res.body.data.collection;
 }
