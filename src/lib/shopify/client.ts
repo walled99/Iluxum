@@ -1,3 +1,5 @@
+import { Product } from './types';
+
 const domain = process.env.SHOPIFY_STORE_DOMAIN;
 const endpoint = `https://${domain}/api/2024-01/graphql.json`;
 const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
@@ -14,7 +16,7 @@ export async function shopifyFetch<T>({
   variables,
   tags,
   cache = 'force-cache'
-}: ShopifyFetchArgs): Promise<{ status: number; body: T } | never> {
+}: ShopifyFetchArgs): Promise<{ status: number; body: { data: T; errors?: any[] } } | never> {
   try {
     const result = await fetch(endpoint, {
       method: 'POST',
@@ -56,6 +58,7 @@ export const getProductByHandleQuery = `
       title
       handle
       description
+      availableForSale
       images(first: 5) {
         edges {
           node {
@@ -69,13 +72,17 @@ export const getProductByHandleQuery = `
           amount
           currencyCode
         }
+        maxVariantPrice {
+          amount
+          currencyCode
+        }
       }
     }
   }
 `;
 
-export async function getProduct(handle: string) {
-  const res = await shopifyFetch<any>({
+export async function getProduct(handle: string): Promise<Product | undefined> {
+  const res = await shopifyFetch<{ product: Product }>({
     query: getProductByHandleQuery,
     variables: { handle },
     tags: ['products']
