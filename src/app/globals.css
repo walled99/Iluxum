@@ -1,6 +1,12 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 @theme {
+  /* Project Radius */
+  --radius: 0.625rem;
+
   /* Brand Palette - Deep Navy & Champagne Gold */
   --color-primary: #121442;
   --color-accent: #C2AC82;
@@ -15,30 +21,63 @@
   /* Luxury Animations */
   --animate-fade-gold: fade-in 0.5s ease-in-out;
 
-  /* Spacing Scale (using logical properties starts here but mostly used in utilities) */
+  /* Shadcn UI Variables Mapping */
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+:root {
+  /* Map Brand Colors to Functional Variables */
+  --background: #FDFBF7;
+  --foreground: #1A1A1A;
+  --card: #FDFBF7;
+  --card-foreground: #1A1A1A;
+  --popover: #FDFBF7;
+  --popover-foreground: #1A1A1A;
+  --primary: #121442;
+  --primary-foreground: #FDFBF7;
+  --secondary: #F4F1EA;
+  --secondary-foreground: #121442;
+  --muted: #F4F1EA;
+  --muted-foreground: #666666;
+  --accent: #C2AC82;
+  --accent-foreground: #121442;
+  --destructive: #ef4444;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #121442;
 }
 
 @layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
   body {
-    background-color: var(--color-background);
-    color: var(--color-ink);
+    background-color: var(--background);
+    color: var(--foreground);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    
-    /* Default spacing using logical properties */
-    padding-block: 0;
-    padding-inline: 0;
-    margin-block: 0;
-    margin-inline: 0;
+    margin: 0;
   }
-
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
   }
 }
 
-/* Logical Spacing Utilities (Tailwind v4 already handles most via ps/pe/ms/me) */
 @utility container-custom {
   max-width: 1440px;
   margin-inline: auto;
