@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Palette - Deep Navy & Champagne Gold */
+  --color-primary: #121442;
+  --color-accent: #C2AC82;
+  --color-background: #FDFBF7;
+  --color-surface: #F4F1EA;
+  --color-ink: #1A1A1A;
+
+  /* Typography Strategy */
+  --font-heading: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
+
+  /* Luxury Animations */
+  --animate-fade-gold: fade-in 0.5s ease-in-out;
+}
+
+body {
+    background-color: var(--color-background);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+}
