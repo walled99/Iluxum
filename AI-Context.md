@@ -40,4 +40,4 @@ Iluxum is a luxury e-commerce storefront built with Next.js 16 (App Router), Tai
 - `src/lib/shopify/client.ts`: GraphQL client.
 
 ## Current Status
-Project initialized and i18n/RTL support implemented. Folder structure set up. Tailwind v4 configured.
+Project initialized, i18n/RTL support implemented, and Shopify Headless Client (with revalidation and error handling) configured. Folder structure set up. Tailwind v4 configured.
