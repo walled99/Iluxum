@@ -91,6 +91,24 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
   return res.body.data.product;
 }
 
+export const getShopQuery = `
+  query getShop {
+    shop {
+      name
+      description
+    }
+  }
+`;
+
+export async function getShop(): Promise<{ name: string; description: string }> {
+  const res = await shopifyFetch<{ shop: { name: string; description: string } }>({
+    query: getShopQuery,
+    cache: 'no-store'
+  });
+
+  return res.body.data.shop;
+}
+
 export const getCartQuery = `
   query getCart($cartId: ID!) {
     cart(id: $cartId) {
