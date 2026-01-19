@@ -36,14 +36,16 @@ Iluxum is a luxury e-commerce storefront built with Next.js 16 (App Router), Tai
 - `src/app/globals.css`: Design system tokens.
 - `src/middleware.ts`: Locale detection and redirection.
 - `src/components/i18n/DirProvider.tsx`: RTL/LTR directionality provider.
-- `src/app/[locale]/layout.tsx`: Localized layout with directionality injection.
-- `src/lib/shopify/client.ts`: GraphQL client with standard fetcher and product queries.
+- `src/app/layout.tsx`: Simplified pass-through root layout.
+- `src/app/[locale]/layout.tsx`: Consolidated localized layout with `DirProvider`, `Header`, and `Footer`.
+- `src/components/layout`: Layout scaffolds (`Header.tsx`, `Footer.tsx`).
+- `src/app/api/revalidate/route.ts`: Secure global webhook handler with HMAC validation.
+- `src/app/[locale]/(shop)/page.tsx`: Home Page RSC fetching collections.
+- `src/app/[locale]/(shop)/loading.tsx`: Global loading state with Shadcn skeletons.
 - `src/app/[locale]/(shop)/product/[handle]/page.tsx`: PDP with split-screen layout.
 - `src/components/products`: Product components (`ProductCard`, `ProductGallery`, `ProductInfo`).
-- `src/components/ui`: Shadcn UI components (Skeleton, Button).
-- `src/app/api/revalidate/route.ts`: Secure global webhook handler with HMAC validation.
+- `src/next.config.ts`: Configuration including Shopify CDN image optimization.
 - `src/lib/store/useCartStore.ts`: Persistent store with Auth-phase sync logic.
-- `src/lib/shopify/types.ts`: TypeScript interfaces for Shopify objects.
 
 ## Current Status
-Project core architecture complete: i18n/RTL, type-safe Shopify client, persistent cart store with merge logic, luxury UI components, and secure webhook cache revalidation.
+Project core architecture complete and verified: i18n/RTL, type-safe Shopify client, persistent cart store, luxury UI components (PDP/Discovery), secure webhook revalidation, and optimized image handling. All routing and layout phases are fully implemented.
