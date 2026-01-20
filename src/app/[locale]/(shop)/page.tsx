@@ -1,4 +1,4 @@
-import { getCollections, getSearchResults } from "@/lib/shopify/client";
+import { getCollections, getSearchResults, getMenu } from "@/lib/shopify/client";
 import { ProductCard } from "@/components/products/ProductCard";
 import { CategoryCarousel } from "@/components/home/CategoryCarousel";
 import Link from "next/link";
@@ -8,16 +8,30 @@ import { ArrowRight } from "lucide-react";
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   
-  // Fetch collections for the category grid
-  const allCollections = await getCollections();
+  // 1. Fetch categories via a Shopify Menu for full dynamic control
+  // To manage these: Create a menu in Shopify Admin with handle 'home-categories'
+  const categoryMenu = await getMenu("home-categories", 'no-store');
   
   // Fetch some "Best Sellers" or featured products (using search for now as a filter)
-  const featuredProducts = await getSearchResults(""); // Empty query returns recent products
+  const featuredProducts = await getSearchResults(""); 
+  
+  let categoryCollections = categoryMenu
+    .filter(item => item.resource?.__typename === 'Collection')
+    .map(item => ({
+      id: item.resource.id,
+      title: item.title,
+      handle: item.resource.handle,
+      image: item.resource.image
+    }));
 
-  // Filter specific collections for the bento-lite grid
-  const categoryCollections = allCollections.filter(c => 
-    ["bedroom", "bathroom", "living", "essentials"].includes(c.handle.toLowerCase())
-  ).slice(0, 4);
+
+  // 2. Fallback: Automatically show all collections if no menu is configured
+  if (categoryCollections.length === 0) {
+    const allCollections = await getCollections();
+    categoryCollections = allCollections.filter(c => 
+      !["frontpage", "all"].includes(c.handle.toLowerCase())
+    );
+  }
 
   const fallbackImages = [
     "https://images.unsplash.com/photo-1505691938895-1758d7eaa511?q=80&w=2000&auto=format&fit=crop", // Bedroom
@@ -25,7 +39,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     "https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?q=80&w=2000&auto=format&fit=crop", // Living
     "https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?q=80&w=2000&auto=format&fit=crop", // Living
     "https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?q=80&w=2000&auto=format&fit=crop", // Living
-    "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=2000&auto=format&fit=crop", // Essentials
+    "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=2000&auto=format&fit=crop", // Sales
   ];
 
   return (

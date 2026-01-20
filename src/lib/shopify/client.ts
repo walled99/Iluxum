@@ -518,3 +518,37 @@ export async function getProductRecommendations(productId: string): Promise<Prod
 
   return res.body.data.productRecommendations;
 }
+
+export const getMenuQuery = `
+  query getMenu($handle: String!) {
+    menu(handle: $handle) {
+      items {
+        title
+        url
+        resource {
+          __typename
+          ... on Collection {
+            id
+            title
+            handle
+            image {
+              url
+              altText
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export async function getMenu(handle: string, cache?: RequestCache): Promise<any[]> {
+  const res = await shopifyFetch<any>({
+    query: getMenuQuery,
+    variables: { handle },
+    tags: ['collections'],
+    cache
+  });
+
+  return res.body.data.menu?.items || [];
+}

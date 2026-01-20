@@ -40,17 +40,27 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
     }
   };
 
-  useEffect(() => {
-    checkScroll();
-    window.addEventListener("resize", checkScroll);
-    return () => window.removeEventListener("resize", checkScroll);
-  }, []);
-
   const scroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
-      const { clientWidth } = scrollContainerRef.current;
-      const scrollAmount = direction === "left" ? -clientWidth : clientWidth;
-      scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      const itemWidth = scrollContainerRef.current.children[0]?.clientWidth || 0;
+      const scrollStep = itemWidth + 32; // item width + gap (gap-8)
+
+      if (direction === "right") {
+        if (scrollLeft + clientWidth >= scrollWidth - 10) {
+          // At the end, loop to start
+          scrollContainerRef.current.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          scrollContainerRef.current.scrollBy({ left: scrollStep, behavior: "smooth" });
+        }
+      } else {
+        if (scrollLeft <= 10) {
+          // At the start, loop to end
+          scrollContainerRef.current.scrollTo({ left: scrollWidth, behavior: "smooth" });
+        } else {
+          scrollContainerRef.current.scrollBy({ left: -scrollStep, behavior: "smooth" });
+        }
+      }
     }
   };
 
@@ -66,15 +76,45 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
 
   const displayCategories = categories.length > 0 
     ? categories 
-    : ['Bedroom', 'Bathroom', 'Living', 'Bed Fillers', 'Essentials', 'Decor'].map((name, idx) => ({
+    : ['Bedroom', 'Bathroom', 'Living Room', 'Sales'].map((name, idx) => ({
         id: `fallback-${idx}`,
         title: name,
-        handle: name.toLowerCase(),
+        handle: name.toLowerCase().replace(' ', '-'),
         image: { url: fallbackImages[idx] || fallbackImages[0] }
       }));
 
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener("resize", checkScroll);
+    return () => window.removeEventListener("resize", checkScroll);
+  }, []);
+
+  // Subtle Auto-play
+  useEffect(() => {
+    if (isHovered) return;
+    
+    const interval = setInterval(() => {
+      if (scrollContainerRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+        if (scrollLeft + clientWidth >= scrollWidth - 10) {
+          scrollContainerRef.current.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          scroll("right");
+        }
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isHovered, displayCategories.length]);
+
   return (
-    <section className="container-custom space-y-10 py-16 relative overflow-visible">
+    <section 
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="container-custom space-y-10 py-16 relative overflow-visible"
+    >
       <div className="flex justify-between items-end border-b border-ink/5 pb-6">
         <div className="space-y-1">
           <h2 className="font-heading text-4xl lg:text-5xl font-bold text-ink italic leading-tight">
@@ -100,7 +140,7 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
             onClick={() => scroll("left")}
             className={cn(
               "pointer-events-auto w-14 h-14 rounded-full flex items-center justify-center bg-white/60 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-all duration-500 hover:bg-white/90 hover:scale-110 active:scale-95 group/btn",
-              !canScrollLeft ? "opacity-0 translate-x-4 invisible" : "opacity-100 translate-x-0"
+              displayCategories.length <= 1 ? "opacity-0 invisible" : "opacity-100 visible"
             )}
             aria-label="Scroll left"
           >
@@ -111,7 +151,7 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
             onClick={() => scroll("right")}
             className={cn(
               "pointer-events-auto w-14 h-14 rounded-full flex items-center justify-center bg-white/60 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-all duration-500 hover:bg-white/90 hover:scale-110 active:scale-95 group/btn",
-              !canScrollRight ? "opacity-0 -translate-x-4 invisible" : "opacity-100 translate-x-0"
+              displayCategories.length <= 1 ? "opacity-0 invisible" : "opacity-100 visible"
             )}
             aria-label="Scroll right"
           >

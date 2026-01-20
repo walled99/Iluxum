@@ -86,3 +86,18 @@ export interface CartLine {
     product: Product;
   };
 }
+export interface Menu {
+  items: MenuItem[];
+}
+
+export interface MenuItem {
+  title: string;
+  url: string;
+  resource?: {
+    __typename: string;
+    id: string;
+    title: string;
+    handle: string;
+    image?: Image;
+  };
+}
