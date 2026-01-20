@@ -1,19 +1,27 @@
 import { getSearchResults } from "@/lib/shopify/client";
 import { ProductCard } from "@/components/products/ProductCard";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 export default async function SearchPage({
   params,
   searchParams,
 }: {
-  params: { locale: string };
-  searchParams: { q?: string };
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ q?: string }>;
 }) {
-  const query = searchParams.q || "";
+  const { locale } = await params;
+  const { q } = await searchParams;
+  const query = q || "";
   const products = query ? await getSearchResults(query) : [];
 
+  const breadcrumbs = [
+    { label: "Search" }
+  ];
+
   return (
-    <div className="container-custom py-12 lg:py-20">
-      <div className="flex flex-col gap-y-12">
+    <div className="container-custom py-8 lg:py-12">
+      <div className="flex flex-col gap-y-8 lg:gap-y-12">
+        <Breadcrumbs items={breadcrumbs} locale={locale} />
         <header className="flex flex-col gap-y-4">
           <h1 className="font-heading text-4xl lg:text-6xl font-bold text-ink italic leading-tight">
             Search Results

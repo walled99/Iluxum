@@ -1,4 +1,11 @@
-import { shopifyFetch, createCartMutation, cartLinesAddMutation, getCartQuery } from './client';
+import { 
+  shopifyFetch, 
+  createCartMutation, 
+  cartLinesAddMutation, 
+  cartLinesUpdateMutation,
+  cartLinesRemoveMutation,
+  getCartQuery 
+} from './client';
 import { Cart } from './types';
 import { LocalCartLine } from '../store/useCartStore';
 
@@ -31,6 +38,26 @@ export async function addToCart(cartId: string, lines: { merchandiseId: string; 
   return res.body.data.cartLinesAdd.cart;
 }
 
+export async function updateCartLines(cartId: string, lines: { id: string; quantity: number }[]) {
+  const res = await shopifyFetch<{ cartLinesUpdate: { cart: { id: string } } }>({
+    query: cartLinesUpdateMutation,
+    variables: { cartId, lines },
+    cache: 'no-store'
+  });
+
+  return res.body.data.cartLinesUpdate.cart;
+}
+
+export async function removeFromCart(cartId: string, lineIds: string[]) {
+  const res = await shopifyFetch<{ cartLinesRemove: { cart: { id: string } } }>({
+    query: cartLinesRemoveMutation,
+    variables: { cartId, lineIds },
+    cache: 'no-store'
+  });
+
+  return res.body.data.cartLinesRemove.cart;
+}
+
 export async function syncCartWithServer(localLines: LocalCartLine[], serverCartId: string | null) {
   let cartId = serverCartId;
 
@@ -40,23 +67,58 @@ export async function syncCartWithServer(localLines: LocalCartLine[], serverCart
     cartId = newCart.id;
   }
 
-  // 2. Fetch current server cart lines to avoid duplicates
+  // 2. Fetch current server cart lines
   const serverCart = await getCart(cartId);
-  const serverVariantIds = new Set(
-    serverCart.lines.edges.map((edge) => edge.node.merchandise.id)
+  const serverLines = serverCart.lines.edges.map(edge => edge.node);
+
+  // Map to store server variant ID -> server line ID
+  const variantToLineId = new Map(
+    serverLines.map((line) => [line.merchandise.id, line.id])
+  );
+  
+  // Map to store server variant ID -> quantity
+  const variantToQuantity = new Map(
+    serverLines.map((line) => [line.merchandise.id, line.quantity])
   );
 
-  // 3. Filter items that are NOT in the server cart
-  const linesToAdd = localLines
-    .filter((line) => !serverVariantIds.has(line.id))
-    .map((line) => ({
-      merchandiseId: line.id,
-      quantity: line.quantity
-    }));
+  // 3. Reconcile Addition/Update
+  const linesToAdd: { merchandiseId: string; quantity: number }[] = [];
+  const linesToUpdate: { id: string; quantity: number }[] = [];
 
-  // 4. Add missing items to the server cart
+  for (const localLine of localLines) {
+    const serverLineId = variantToLineId.get(localLine.id);
+    const serverQuantity = variantToQuantity.get(localLine.id);
+
+    if (!serverLineId) {
+      // New item
+      linesToAdd.push({
+        merchandiseId: localLine.id,
+        quantity: localLine.quantity
+      });
+    } else if (serverQuantity !== localLine.quantity) {
+      // Quantity mismatch: Local is always source of truth during sync trigger
+      linesToUpdate.push({
+        id: serverLineId,
+        quantity: localLine.quantity
+      });
+    }
+  }
+
+  // 4. Reconcile Removal (Server items NOT in local lines)
+  const localVariantIds = new Set(localLines.map(l => l.id));
+  const lineIdsToRemove = serverLines
+    .filter(sl => !localVariantIds.has(sl.merchandise.id))
+    .map(sl => sl.id);
+
+  // 5. Execute Updates
   if (linesToAdd.length > 0) {
     await addToCart(cartId, linesToAdd);
+  }
+  if (linesToUpdate.length > 0) {
+    await updateCartLines(cartId, linesToUpdate);
+  }
+  if (lineIdsToRemove.length > 0) {
+    await removeFromCart(cartId, lineIdsToRemove);
   }
 
   return cartId;

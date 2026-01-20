@@ -3,12 +3,15 @@ import { ProductCard } from "@/components/products/ProductCard";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+
 export default async function CollectionPage({
   params,
 }: {
-  params: { locale: string; handle: string };
+  params: Promise<{ locale: string; handle: string }>;
 }) {
-  const collection = await getCollection(params.handle);
+  const { handle, locale } = await params;
+  const collection = await getCollection(handle);
 
   if (!collection) {
     return notFound();
@@ -16,8 +19,16 @@ export default async function CollectionPage({
 
   const products = collection.products.edges.map((edge: any) => edge.node);
 
+  const breadcrumbs = [
+    { label: "Collections", href: `/${locale}/collections` },
+    { label: collection.title }
+  ];
+
   return (
-    <div className="flex flex-col gap-y-12 lg:gap-y-20 pb-20">
+    <div className="flex flex-col gap-y-8 lg:gap-y-12 pb-20">
+      <div className="container-custom pt-8">
+        <Breadcrumbs items={breadcrumbs} locale={locale} />
+      </div>
       {collection.image && (
         <div className="relative h-[40vh] lg:h-[60vh] w-full bg-surface overflow-hidden">
           <Image

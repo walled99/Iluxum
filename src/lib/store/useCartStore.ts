@@ -26,6 +26,7 @@ interface CartState {
   clearCart: () => void;
   setShopifyCartId: (id: string | null) => void;
   setCartOpen: (open: boolean) => void;
+  setLines: (lines: LocalCartLine[]) => void;
 }
 
 export const useCartStore = create<CartState>()(
@@ -64,6 +65,7 @@ export const useCartStore = create<CartState>()(
       clearCart: () => set({ lines: [] }),
       setShopifyCartId: (id) => set({ shopifyCartId: id }),
       setCartOpen: (open) => set({ isCartOpen: open }),
+      setLines: (lines) => set({ lines }),
     }),
     {
       name: 'iluxum-cart',

@@ -32,25 +32,19 @@ Iluxum is a luxury e-commerce storefront built with Next.js 16 (App Router), Tai
 - **Animations**: `fade-gold`
 - **Layout**: Strict use of **Logical Properties** (`inline`, `block`, `start`, `end`) for RTL/LTR compatibility.
 
+- **Internationalization (i18n)**: Fully localized route strategy (`eg-en`, `eg-ar`, `ch-fr`) with RTL support, dynamic `hreflang` generation, and locale-aware navigation.
+- **Shopify Authentication**: Secure customer identity management using Shopify Customer Access Tokens, HttpOnly cookies, and localized account dashboards.
+- **Robust Cart Orchestration**: Bidirectional CRUD synchronization (Add, Update, Remove) between the local Zustand store and Shopify's server-side cart. Includes a deep-comparison state engine to prevent flickering and infinite loops.
+- **Luxury Content**: Narrative-driven Story page with Framer Motion animations and high-end typography.
+- **Product Discovery**: Breadcrumbs navigation and AI-driven "You May Also Like" recommendations.
+- **Technical Excellence**: Next.js 15+ compliance (Promise-based params), robust GraphQL error handling, and secure HMAC webhook validation.
+
 ## Key Files
-- `src/app/globals.css`: Design system tokens.
-- `src/middleware.ts`: Locale detection and redirection.
-- `src/components/i18n/DirProvider.tsx`: RTL/LTR directionality provider.
-- `src/app/layout.tsx`: Simplified pass-through root layout.
-- `src/app/[locale]/layout.tsx`: Consolidated localized layout with `DirProvider`, `Header`, and `Footer`.
-- `src/components/layout`: Layout components (`Header.tsx`, `Footer.tsx`, `PredictiveSearch.tsx`).
-- `src/components/cart`: Cart components (`CartDrawer.tsx`, `CartSyncProvider.tsx`).
-- `src/app/api/revalidate/route.ts`: Secure global webhook handler with HMAC validation.
-- `src/app/[locale]/(shop)/page.tsx`: Home Page RSC fetching collections.
-- `src/app/[locale]/(shop)/loading.tsx`: Global loading state with Shadcn skeletons.
-- `src/app/[locale]/(shop)/search/page.tsx`: Full search results destination page.
-- `src/app/[locale]/(shop)/collection/[handle]/page.tsx`: Dynamic collection discovery pages.
-- `src/app/[locale]/(shop)/product/[handle]/page.tsx`: PDP with split-screen layout and interactive variant selectors.
-- `src/components/products`: Product components (`ProductCard`, `ProductGallery`, `ProductInfo`).
-- `src/next.config.ts`: Configuration including Shopify CDN image optimization.
-- `src/lib/shopify/client.ts`: GraphQL client with standard fetcher and product queries.
-- `src/lib/shopify/actions.ts`: **Server Actions** bridge for client-side components (Checkout, Search, Sync).
-- `src/lib/store/useCartStore.ts`: Persistent store with Auth-phase sync logic and drawer state.
+- `src/lib/shopify/cart.ts`: Encapsulates complex cart reconciliation and CRUD operations.
+- `src/components/cart/CartSyncProvider.tsx`: State-guarded bidirectional sync orchestrator.
+- `src/lib/shopify/client.ts`: Type-safe GraphQL fetcher with advanced error logging.
+- `src/app/[locale]/layout.tsx`: Root localized layout with SEO and `hreflang` logic.
+- `src/lib/store/useCartStore.ts`: Persistent state management for the premium user experience.
 
 ## Current Status
-Project core and interactive architecture complete: i18n/RTL, type-safe Shopify client with predictive search, full discovery pages (Search/Collections), persistent cart with server-sync logic, interactive PDP with variant support, and luxury checkout handover.
+The Iluxum platform is now functionally complete and production-hardened. The **Cart Engine** has been refactored for full CRUD reliability, **Identity** is secure and localized, and **Global SEO** is optimized for international reach. Currently monitoring stability and fine-tuning UX transitions.

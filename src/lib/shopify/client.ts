@@ -35,19 +35,17 @@ export async function shopifyFetch<T>({
     const body = await result.json();
 
     if (body.errors) {
-      throw body.errors[0];
+      console.error('GraphQL Errors:', JSON.stringify(body.errors, null, 2));
+      throw new Error(body.errors[0].message || 'GraphQL Error');
     }
 
     return {
       status: result.status,
       body
     };
-  } catch (e) {
-    console.error('Shopify Fetch Error:', e);
-    throw {
-      error: e,
-      query
-    };
+  } catch (e: any) {
+    console.error('Shopify Fetch Error:', e.message || e);
+    throw e;
   }
 }
 
@@ -154,10 +152,15 @@ export const getCartQuery = `
               ... on ProductVariant {
                 id
                 title
+                price { amount currencyCode }
                 product {
                   id
                   title
                   handle
+                  featuredImage {
+                    url
+                    altText
+                  }
                 }
               }
             }
@@ -187,6 +190,34 @@ export const createCartMutation = `
 export const cartLinesAddMutation = `
   mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
     cartLinesAdd(cartId: $cartId, lines: $lines) {
+      cart {
+        id
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const cartLinesUpdateMutation = `
+  mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+    cartLinesUpdate(cartId: $cartId, lines: $lines) {
+      cart {
+        id
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const cartLinesRemoveMutation = `
+  mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+    cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
       cart {
         id
       }
@@ -326,4 +357,128 @@ export async function getCollection(handle: string): Promise<any> {
   });
 
   return res.body.data.collection;
+}
+
+export const customerAccessTokenCreateMutation = `
+  mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+    customerAccessTokenCreate(input: $input) {
+      customerAccessToken {
+        accessToken
+        expiresAt
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const customerCreateMutation = `
+  mutation customerCreate($input: CustomerCreateInput!) {
+    customerCreate(input: $input) {
+      customer {
+        id
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const getCustomerQuery = `
+  query getCustomer($customerAccessToken: String!) {
+    customer(customerAccessToken: $customerAccessToken) {
+      id
+      firstName
+      lastName
+      email
+      phone
+      defaultAddress {
+        id
+        address1
+        address2
+        city
+        province
+        country
+        zip
+      }
+      addresses(first: 10) {
+        edges {
+          node {
+            id
+            address1
+            address2
+            city
+            province
+            country
+            zip
+          }
+        }
+      }
+      orders(first: 10, sortKey: PROCESSED_AT, reverse: true) {
+        edges {
+          node {
+            id
+            orderNumber
+            processedAt
+            totalPrice {
+              amount
+              currencyCode
+            }
+            financialStatus
+            fulfillmentStatus
+            lineItems(first: 10) {
+              edges {
+                node {
+                  title
+                  quantity
+                  variant {
+                    image {
+                      url
+                      altText
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const getProductRecommendationsQuery = `
+  query getProductRecommendations($productId: ID!) {
+    productRecommendations(productId: $productId) {
+      id
+      title
+      handle
+      featuredImage {
+        url
+        altText
+      }
+      priceRange {
+        minVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+    }
+  }
+`;
+
+export async function getProductRecommendations(productId: string): Promise<Product[]> {
+  const res = await shopifyFetch<{ productRecommendations: Product[] }>({
+    query: getProductRecommendationsQuery,
+    variables: { productId },
+    tags: ['products']
+  });
+
+  return res.body.data.productRecommendations;
 }
