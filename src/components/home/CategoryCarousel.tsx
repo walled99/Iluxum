@@ -135,7 +135,7 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
 
       <div className="relative group/carousel -mx-4 px-4 overflow-visible">
         {/* Navigation Arrows - Modern Glassmorphism */}
-        <div className="absolute inset-y-0 -left-6 -right-6 flex items-center justify-between pointer-events-none z-30">
+        <div className="absolute inset-y-0 -left-6 -right-6 hidden lg:flex items-center justify-between pointer-events-none z-30">
           <button
             onClick={() => scroll("left")}
             className={cn(
