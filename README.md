@@ -1,4 +1,9 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Iluxum Luxury Textiles
+
+A premium storefront built with Next.js and Shopify.
+
+> [!NOTE]
+> For a detailed directory of all pages and features, see **[Sitemap & Pages Guide](file:///e:/Iluxum/PAGES.md)**.
 
 ## Getting Started
 

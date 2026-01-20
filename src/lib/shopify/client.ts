@@ -292,6 +292,14 @@ export const getSearchResultsQuery = `
               url
               altText
             }
+            images(first: 1) {
+              edges {
+                node {
+                  url
+                  altText
+                }
+              }
+            }
             priceRange {
               minVariantPrice {
                 amount
@@ -357,6 +365,34 @@ export async function getCollection(handle: string): Promise<any> {
   });
 
   return res.body.data.collection;
+}
+
+export const getCollectionsQuery = `
+  query getCollections {
+    collections(first: 20) {
+      edges {
+        node {
+          id
+          title
+          handle
+          description
+          image {
+            url
+            altText
+          }
+        }
+      }
+    }
+  }
+`;
+
+export async function getCollections(): Promise<any[]> {
+  const res = await shopifyFetch<{ collections: Connection<any> }>({
+    query: getCollectionsQuery,
+    tags: ['collections']
+  });
+
+  return res.body.data.collections.edges.map((edge) => edge.node);
 }
 
 export const customerAccessTokenCreateMutation = `

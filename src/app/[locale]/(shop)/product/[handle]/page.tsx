@@ -74,7 +74,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
       </div>
 
-      <ProductRecommendations productId={product.id} />
+      <ProductRecommendations productId={product.id} locale={locale} />
     </div>
   );
 }

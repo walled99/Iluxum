@@ -28,10 +28,12 @@ export default function Header({
         <nav className="hidden lg:flex gap-x-8 font-body text-[10px] font-bold text-ink/80 uppercase tracking-[0.3em] overflow-hidden">
           <Link href={`/${locale}/collections`} className="hover:text-accent transition-colors">Collections</Link>
           <Link href={`/${locale}/story`} className="hover:text-accent transition-colors">Story</Link>
+          <Link href={`/${locale}/contact`} className="hover:text-accent transition-colors">Contact</Link>
+          <Link href={`/${locale}/faq`} className="hover:text-accent transition-colors">FAQ</Link>
         </nav>
 
         <div className="flex-1 max-w-md hidden md:block">
-          <PredictiveSearch />
+          <PredictiveSearch locale={locale} />
         </div>
 
         <div className="flex items-center gap-x-6">
@@ -51,7 +53,7 @@ export default function Header({
           </button>
         </div>
       </div>
-      <CartDrawer />
+      <CartDrawer locale={locale} />
     </header>
   );
 }

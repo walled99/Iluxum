@@ -14,8 +14,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Plus, Minus, Trash2, ShoppingBag, Loader2 } from "lucide-react";
+import Link from "next/link";
 
-export function CartDrawer() {
+export function CartDrawer({ locale = "eg-en" }: { locale?: string }) {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const { lines, isCartOpen, setCartOpen, updateQuantity, removeItem, shopifyCartId } = useCartStore();
 
@@ -52,19 +53,27 @@ export function CartDrawer() {
               <div className="flex flex-col gap-y-6 py-6">
                 {lines.map((line) => (
                   <div key={line.id} className="flex gap-x-4">
-                    <div className="relative aspect-[3/4] w-20 bg-surface overflow-hidden">
+                    <Link 
+                      href={`/${locale}/product/${line.merchandise.product.handle}`}
+                      onClick={() => setCartOpen(false)}
+                      className="relative aspect-[3/4] w-20 bg-surface overflow-hidden flex-shrink-0"
+                    >
                       <Image
                         src={line.merchandise.product.featuredImage.url}
                         alt={line.merchandise.product.featuredImage.altText || line.merchandise.product.title}
                         fill
-                        className="object-cover"
+                        className="object-cover transition-transform duration-500 hover:scale-110"
                       />
-                    </div>
+                    </Link>
                     <div className="flex flex-1 flex-col justify-between py-1">
                       <div className="flex flex-col gap-y-1">
-                        <h4 className="font-heading text-sm font-bold text-ink leading-tight">
+                        <Link 
+                          href={`/${locale}/product/${line.merchandise.product.handle}`}
+                          onClick={() => setCartOpen(false)}
+                          className="font-heading text-sm font-bold text-ink leading-tight hover:text-accent transition-colors"
+                        >
                           {line.merchandise.product.title}
-                        </h4>
+                        </Link>
                         <p className="font-body text-[10px] text-ink/60 uppercase tracking-widest">
                           {line.merchandise.title !== "Default Title" ? line.merchandise.title : "Standard Edition"}
                         </p>

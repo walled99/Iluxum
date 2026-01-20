@@ -4,16 +4,17 @@ import { Product } from "@/lib/shopify/types";
 
 interface ProductCardProps {
   product: Product;
+  locale?: string;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
-  const { title, handle, priceRange, images } = product;
-  const mainImage = images.edges[0]?.node;
+export function ProductCard({ product, locale = "eg-en" }: ProductCardProps) {
+  const { title, handle, priceRange, images, featuredImage } = product;
+  const mainImage = images?.edges?.[0]?.node || featuredImage;
   const price = priceRange.minVariantPrice;
 
   return (
     <div className="group flex flex-col gap-y-4 transition-all duration-300">
-      <Link href={`/product/${handle}`} className="relative aspect-[4/5] overflow-hidden bg-surface">
+      <Link href={`/${locale}/product/${handle}`} className="relative aspect-[4/5] overflow-hidden bg-surface">
         {mainImage && (
           <Image
             src={mainImage.url}
@@ -27,7 +28,7 @@ export function ProductCard({ product }: ProductCardProps) {
       </Link>
 
       <div className="flex flex-col gap-y-1 ps-4 pb-4">
-        <Link href={`/product/${handle}`}>
+        <Link href={`/${locale}/product/${handle}`}>
           <h3 className="font-heading text-lg leading-tight text-ink transition-colors hover:text-accent">
             {title}
           </h3>

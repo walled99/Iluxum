@@ -1,7 +1,7 @@
 import { getProductRecommendations } from "@/lib/shopify/client";
 import { ProductCard } from "./ProductCard";
 
-export async function ProductRecommendations({ productId }: { productId: string }) {
+export async function ProductRecommendations({ productId, locale }: { productId: string; locale: string }) {
   const recommendations = await getProductRecommendations(productId);
 
   if (!recommendations || recommendations.length === 0) {
@@ -21,7 +21,7 @@ export async function ProductRecommendations({ productId }: { productId: string 
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10 lg:gap-x-8 lg:gap-y-16">
         {recommendations.slice(0, 4).map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product.id} product={product} locale={locale} />
         ))}
       </div>
     </section>

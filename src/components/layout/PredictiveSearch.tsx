@@ -8,7 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useClickAway } from "react-use";
 
-export function PredictiveSearch() {
+export function PredictiveSearch({ locale = "eg-en" }: { locale?: string }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -68,7 +68,7 @@ export function PredictiveSearch() {
                   {results.products.slice(0, 4).map((product: any) => (
                     <Link
                       key={product.id}
-                      href={`/product/${product.handle}`}
+                      href={`/${locale}/product/${product.handle}`}
                       onClick={() => setIsOpen(false)}
                       className="flex gap-x-4 group/item"
                     >
@@ -108,7 +108,7 @@ export function PredictiveSearch() {
                   {results.collections.map((collection: any) => (
                     <Link
                       key={collection.id}
-                      href={`/collection/${collection.handle}`}
+                      href={`/${locale}/collection/${collection.handle}`}
                       onClick={() => setIsOpen(false)}
                       className="px-3 py-1 font-body text-[10px] uppercase tracking-widest bg-surface text-ink/60 hover:bg-primary hover:text-background transition-colors"
                     >
@@ -120,7 +120,7 @@ export function PredictiveSearch() {
             )}
 
             <Link 
-              href={`/search?q=${query}`}
+              href={`/${locale}/search?q=${query}`}
               onClick={() => setIsOpen(false)}
               className="font-body text-[10px] uppercase tracking-[0.2em] text-center text-ink/40 hover:text-accent transition-colors pt-2 border-t border-surface"
             >
