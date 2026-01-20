@@ -73,25 +73,51 @@ export default async function LocaleLayout({
     getMenu('footer', 'no-store'),
   ]);
 
+  // Robust URL transformation for Shopify links
+  const transformUrl = (url: string, type?: string) => {
+    if (!url) return "#";
+    
+    // 1. Remove Shopify domain if present
+    let path = url.replace(/https:\/\/[^/]+/, "");
+    
+    // 2. Normalize collections to collection (to match folder structure)
+    // If we know it's a collection, ensure /collection/ prefix exists
+    if (type === 'Collection' && !path.includes('/collection')) {
+      path = `/collection/${path.split('/').pop()}`;
+    }
+    path = path.replace("/collections/", "/collection/");
+    
+    // 3. Prevent double locale prefixing
+    if (path.startsWith(`/${locale}`)) return path;
+    
+    // 4. Transform /pages/ to root for custom pages
+    if (path.startsWith("/pages/")) path = path.replace("/pages/", "/");
+    
+    // 5. Ensure leading slash and prepend locale
+    if (!path.startsWith("/")) path = `/${path}`;
+    
+    return `/${locale}${path}`.replace(/\/+/g, "/");
+  };
+
   // Transform menu items for Header
   const headerMenuItems = mainMenuItems.map((item: any) => ({
     title: item.title,
-    url: item.url.replace('https://iluxum-store.myshopify.com', `/${locale}`).replace('/collections/', '/collection/'),
+    url: transformUrl(item.url, item.resource?.__typename),
   }));
 
   // Transform menu items for Footer (split into collections and concierge)
   const footerCollections = footerMenuItems
-    .filter((item: any) => item.url.includes('/collection'))
+    .filter((item: any) => item.resource?.__typename === 'Collection' || item.url.includes('/collection'))
     .map((item: any) => ({
       title: item.title,
-      url: item.url.replace('https://iluxum-store.myshopify.com', `/${locale}`).replace('/collections/', '/collection/'),
+      url: transformUrl(item.url, item.resource?.__typename),
     }));
 
   const footerConcierge = footerMenuItems
-    .filter((item: any) => !item.url.includes('/collection'))
+    .filter((item: any) => item.resource?.__typename !== 'Collection' && !item.url.includes('/collection'))
     .map((item: any) => ({
       title: item.title,
-      url: item.url.replace('https://iluxum-store.myshopify.com', `/${locale}`).replace('/pages/', '/'),
+      url: transformUrl(item.url, item.resource?.__typename),
     }));
 
   return (
