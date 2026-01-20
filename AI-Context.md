@@ -47,4 +47,13 @@ Iluxum is a luxury e-commerce storefront built with Next.js 16 (App Router), Tai
 - `src/lib/store/useCartStore.ts`: Persistent state management for the premium user experience.
 
 ## Current Status
-Platform pillars (Auth, Cart CRUD, SEO, Story, Home, and Support Page Ecosystem) are production-hardened and verified. The storefront is fully localized, documented, and statically optimized, meeting all world-class UX and structural audit requirements.
+Platform pillars (Auth, Cart CRUD, SEO, Story, Home, and Support Page Ecosystem) are production-hardened and verified. 
+
+**Phase 2 Complete:**
+- Dynamic Header/Footer synced with Shopify Menus (`main-menu`, `footer`)
+- Category Carousel driven by `home-categories` menu with auto-play and infinite loop
+- Product Gallery with click-to-zoom and thumbnail navigation
+- SEO metadata with canonical URLs and hreflang alternates
+
+The storefront is fully localized, documented, and statically optimized, meeting all world-class UX requirements.
+

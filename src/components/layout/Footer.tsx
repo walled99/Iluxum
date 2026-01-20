@@ -1,7 +1,38 @@
 import Link from "next/link";
 
-export default function Footer({ locale }: { locale?: string }) {
+interface MenuItem {
+  title: string;
+  url: string;
+}
+
+interface FooterProps {
+  locale?: string;
+  collectionsMenu?: MenuItem[];
+  conciergeMenu?: MenuItem[];
+}
+
+export default function Footer({ locale, collectionsMenu = [], conciergeMenu = [] }: FooterProps) {
   const l = locale || "eg-en";
+  
+  // Fallback collections if no menu provided
+  const collections = collectionsMenu.length > 0 
+    ? collectionsMenu 
+    : [
+        { title: "New Arrivals", url: `/${l}/search` },
+        { title: "Bedroom", url: `/${l}/collection/bedroom` },
+        { title: "Bathroom", url: `/${l}/collection/bath` },
+        { title: "All Products", url: `/${l}/search` },
+      ];
+
+  // Fallback concierge links if no menu provided
+  const concierge = conciergeMenu.length > 0 
+    ? conciergeMenu 
+    : [
+        { title: "Contact Advisor", url: `/${l}/contact` },
+        { title: "Assistance & FAQ", url: `/${l}/faq` },
+        { title: "The Heritage", url: `/${l}/story` },
+        { title: "Private Account", url: `/${l}/account` },
+      ];
   
   return (
     <footer className="border-t border-surface bg-surface pt-12 lg:pt-24 pb-8 lg:pb-12">
@@ -17,20 +48,26 @@ export default function Footer({ locale }: { locale?: string }) {
           <div className="flex flex-col gap-y-6">
             <h4 className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-ink">Collections</h4>
             <ul className="flex flex-col gap-y-3 font-body text-sm text-ink/70">
-              <li><Link href={`/${l}/search`} className="hover:text-accent transition-colors">New Arrivals</Link></li>
-              <li><Link href={`/${l}/collection/bedroom`} className="hover:text-accent transition-colors">Bedroom</Link></li>
-              <li><Link href={`/${l}/collection/bathroom`} className="hover:text-accent transition-colors">Bathroom</Link></li>
-              <li><Link href={`/${l}/search`} className="hover:text-accent transition-colors">All Products</Link></li>
+              {collections.map((item) => (
+                <li key={item.title}>
+                  <Link href={item.url} className="hover:text-accent transition-colors">
+                    {item.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div className="flex flex-col gap-y-6">
             <h4 className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-ink">Concierge</h4>
             <ul className="flex flex-col gap-y-3 font-body text-sm text-ink/70">
-              <li><Link href={`/${l}/contact`} className="hover:text-accent transition-colors">Contact Advisor</Link></li>
-              <li><Link href={`/${l}/faq`} className="hover:text-accent transition-colors">Assistance & FAQ</Link></li>
-              <li><Link href={`/${l}/story`} className="hover:text-accent transition-colors">The Heritage</Link></li>
-              <li><Link href={`/${l}/account`} className="hover:text-accent transition-colors">Private Account</Link></li>
+              {concierge.map((item) => (
+                <li key={item.title}>
+                  <Link href={item.url} className="hover:text-accent transition-colors">
+                    {item.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

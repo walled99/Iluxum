@@ -5,6 +5,7 @@ import Footer from "@/components/layout/Footer";
 import "../globals.css";
 
 import { cookies } from "next/headers";
+import { getMenu } from "@/lib/shopify/client";
 
 const playfair = Playfair_Display({
   variable: "--font-heading",
@@ -66,17 +67,53 @@ export default async function LocaleLayout({
   const cookieStore = await cookies();
   const token = cookieStore.get("iluxum_customer_token")?.value;
 
+  // Fetch navigation menus from Shopify
+  const [mainMenuItems, footerMenuItems] = await Promise.all([
+    getMenu('main-menu', 'no-store'),
+    getMenu('footer', 'no-store'),
+  ]);
+
+  // Transform menu items for Header
+  const headerMenuItems = mainMenuItems.map((item: any) => ({
+    title: item.title,
+    url: item.url.replace('https://iluxum-store.myshopify.com', `/${locale}`).replace('/collections/', '/collection/'),
+  }));
+
+  // Transform menu items for Footer (split into collections and concierge)
+  const footerCollections = footerMenuItems
+    .filter((item: any) => item.url.includes('/collection'))
+    .map((item: any) => ({
+      title: item.title,
+      url: item.url.replace('https://iluxum-store.myshopify.com', `/${locale}`).replace('/collections/', '/collection/'),
+    }));
+
+  const footerConcierge = footerMenuItems
+    .filter((item: any) => !item.url.includes('/collection'))
+    .map((item: any) => ({
+      title: item.title,
+      url: item.url.replace('https://iluxum-store.myshopify.com', `/${locale}`).replace('/pages/', '/'),
+    }));
+
   return (
     <html lang={lang} dir={dir} className="selection:bg-accent/30">
       <body className={`${playfair.variable} ${inter.variable} antialiased`}>
         <DirProvider dir={dir}>
-          <Header locale={locale} customerAccessToken={token} />
+          <Header 
+            locale={locale} 
+            customerAccessToken={token} 
+            menuItems={headerMenuItems}
+          />
           <main className="min-h-screen">
             {children}
           </main>
-          <Footer locale={locale} />
+          <Footer 
+            locale={locale} 
+            collectionsMenu={footerCollections}
+            conciergeMenu={footerConcierge}
+          />
         </DirProvider>
       </body>
     </html>
   );
 }
+

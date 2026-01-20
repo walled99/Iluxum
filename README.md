@@ -1,41 +1,43 @@
 # Iluxum Luxury Textiles
 
-A premium storefront built with Next.js and Shopify.
+A premium e-commerce storefront built with Next.js 16 and Shopify Headless.
 
 > [!NOTE]
 > For a detailed directory of all pages and features, see **[Sitemap & Pages Guide](file:///e:/Iluxum/PAGES.md)**.
 
-## Getting Started
+## Features
 
-First, run the development server:
+### Dynamic Content Management
+- **Header/Footer Navigation**: Synced with Shopify Menus (`main-menu`, `footer`)
+- **Category Carousel**: Driven by `home-categories` Shopify Menu with auto-play
+- **Product Recommendations**: AI-powered "You May Also Like" section
+
+### Product Experience
+- **Click-to-Zoom Gallery**: Hover magnification with thumbnail navigation
+- **Variant Selection**: Dynamic pricing based on selected options
+- **Breadcrumb Navigation**: Full product path for SEO
+
+### SEO & Performance
+- **Dynamic Metadata**: Per-page titles, descriptions, and Open Graph tags
+- **Hreflang Support**: Multi-locale canonical URLs and alternates
+- **Image Optimization**: Next.js Image with lazy loading
+
+## Getting Started
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Content Management
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Manage navigation from Shopify Admin:
+- **Header Links**: Edit `main-menu` in Navigation
+- **Footer Links**: Edit `footer` in Navigation
+- **Home Categories**: Edit `home-categories` in Navigation
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The easiest way to deploy is via the [Vercel Platform](https://vercel.com).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

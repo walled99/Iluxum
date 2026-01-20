@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Test",
+    "url": "https://iluxum-store.myshopify.com/collections/test",
+    "resource": {
+      "__typename": "Collection",
+      "id": "gid://shopify/Collection/294705954877",
+      "title": "Test",
+      "handle": "test",
+      "image": {
+        "url": "https://cdn.shopify.com/s/files/1/0647/2132/2045/collections/sanibell-bv-77ye1hKRpO0-unsplash_b657b48c-ddb4-4aad-96ee-e1dc159f8897.jpg?v=1768929578",
+        "altText": null
+      }
+    }
+  },
+  {
+    "title": "Living Room",
+    "url": "https://iluxum-store.myshopify.com/collections/living-room",
+    "resource": {
+      "__typename": "Collection",
+      "id": "gid://shopify/Collection/294705102909",
+      "title": "Living Room",
+      "handle": "living-room",
+      "image": {
+        "url": "https://cdn.shopify.com/s/files/1/0647/2132/2045/collections/ikshana-productions-vMH5nidZDc0-unsplash.jpg?v=1768927385",
+        "altText": null
+      }
+    }
+  },
+  {
+    "title": "Sales",
+    "url": "https://iluxum-store.myshopify.com/collections/sales",
+    "resource": {
+      "__typename": "Collection",
+      "id": "gid://shopify/Collection/294705135677",
+      "title": "Sales",
+      "handle": "sales",
+      "image": {
+        "url": "https://cdn.shopify.com/s/files/1/0647/2132/2045/collections/alef-morais-5sLjuNf89rw-unsplash.jpg?v=1768927377",
+        "altText": null
+      }
+    }
+  },
+  {
+    "title": "Bedroom",
+    "url": "https://iluxum-store.myshopify.com/collections/bedroom",
+    "resource": {
+      "__typename": "Collection",
+      "id": "gid://shopify/Collection/294705070141",
+      "title": "Bedroom",
+      "handle": "bedroom",
+      "image": {
+        "url": "https://cdn.shopify.com/s/files/1/0647/2132/2045/collections/alef-morais-5sLjuNf89rw-unsplash_2aeb9619-ebcf-42fb-b2fe-bd2982f50012.jpg?v=1768927395",
+        "altText": null
+      }
+    }
+  },
+  {
+    "title": "Bathroom",
+    "url": "https://iluxum-store.myshopify.com/collections/bath",
+    "resource": {
+      "__typename": "Collection",
+      "id": "gid://shopify/Collection/294658113597",
+      "title": "Bathroom",
+      "handle": "bath",
+      "image": {
+        "url": "https://cdn.shopify.com/s/files/1/0647/2132/2045/collections/sanibell-bv-77ye1hKRpO0-unsplash.jpg?v=1768927405",
+        "altText": null
+      }
+    }
+  }
+]
