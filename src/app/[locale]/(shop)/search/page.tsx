@@ -12,7 +12,7 @@ export default async function SearchPage({
   const { locale } = await params;
   const { q } = await searchParams;
   const query = q || "";
-  const products = query ? await getSearchResults(query) : [];
+  const products = await getSearchResults(query);
 
   const breadcrumbs = [
     { label: "Search" }

@@ -21,9 +21,14 @@ export default function StoryPage() {
           transition={{ duration: 1.5, ease: "easeOut" }}
           className="absolute inset-0"
         >
-          <div className="absolute inset-0 bg-primary/20 z-10" />
-          {/* Using a placeholder-style luxury image concept */}
-          <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1620706857370-e1b977f7f13d?q=80&w=2000')] bg-cover bg-center" />
+          <div className="absolute inset-0 bg-primary/40 z-10" />
+          <Image
+            src="/hero-in-our-story.png"
+            alt="Luxury textiles heritage"
+            fill
+            priority
+            className="object-cover"
+          />
         </motion.div>
         
         <div className="relative z-20 text-center px-6">
