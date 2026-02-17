@@ -1,4 +1,4 @@
-import { getCollection } from "@/lib/shopify/client";
+import { getCollection } from "@/lib/supabase/queries";
 import { ProductCard } from "@/components/products/ProductCard";
 import Image from "next/image";
 import { notFound } from "next/navigation";

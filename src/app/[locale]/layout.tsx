@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import "../globals.css";
 
 import { cookies } from "next/headers";
-import { getMenu } from "@/lib/shopify/client";
+import { getMenu } from "@/lib/supabase/queries";
 
 const playfair = Playfair_Display({
   variable: "--font-heading",
@@ -67,33 +67,27 @@ export default async function LocaleLayout({
   const cookieStore = await cookies();
   const token = cookieStore.get("iluxum_customer_token")?.value;
 
-  // Fetch navigation menus from Shopify
+  // Fetch navigation menus from Supabase
   const [mainMenuItems, footerMenuItems] = await Promise.all([
-    getMenu('main-menu', 'no-store'),
-    getMenu('footer', 'no-store'),
+    getMenu('main-menu'),
+    getMenu('footer'),
   ]);
 
-  // Robust URL transformation for Shopify links
+  // Transform menu URLs — Supabase stores clean paths already
   const transformUrl = (url: string, type?: string) => {
     if (!url) return "#";
+    let path = url;
     
-    // 1. Remove Shopify domain if present
-    let path = url.replace(/https:\/\/[^/]+/, "");
-    
-    // 2. Normalize collections to collection (to match folder structure)
-    // If we know it's a collection, ensure /collection/ prefix exists
+    // Normalize collections to collection (to match folder structure)
     if (type === 'Collection' && !path.includes('/collection')) {
       path = `/collection/${path.split('/').pop()}`;
     }
     path = path.replace("/collections/", "/collection/");
     
-    // 3. Prevent double locale prefixing
+    // Prevent double locale prefixing
     if (path.startsWith(`/${locale}`)) return path;
     
-    // 4. Transform /pages/ to root for custom pages
-    if (path.startsWith("/pages/")) path = path.replace("/pages/", "/");
-    
-    // 5. Ensure leading slash and prepend locale
+    // Ensure leading slash and prepend locale
     if (!path.startsWith("/")) path = `/${path}`;
     
     return `/${locale}${path}`.replace(/\/+/g, "/");

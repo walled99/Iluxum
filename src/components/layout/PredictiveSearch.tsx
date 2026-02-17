@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { getPredictiveSearchAction } from "@/lib/shopify/actions";
+import { getPredictiveSearchAction } from "@/lib/supabase/actions";
 import { Input } from "@/components/ui/input";
 import { Search, Loader2, X } from "lucide-react";
 import Link from "next/link";

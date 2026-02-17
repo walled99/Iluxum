@@ -53,7 +53,8 @@ A comprehensive guide to the pages and features of the Iluxum luxury textile sto
 - **Routes**: `/[locale]/login`, `/[locale]/register`
 - **Purpose**: Secure entry and onboarding.
 - **Key Features**:
-  - Shopify Customer API integration.
+  - **Supabase Auth** integration.
+  - Social login readiness (Google/Apple).
   - Error handling and redirect logic.
 
 ---
@@ -95,4 +96,4 @@ A comprehensive guide to the pages and features of the Iluxum luxury textile sto
 
 - **Header**: Contains Logo, localized navigation (Collections, Story, Contact, FAQ), Predictive Search, Account link, and Cart trigger.
 - **Footer**: Localized links to all sections, social signals, newsletter subscription, and payment trust indicators.
-- **Cart Drawer**: Side-panel for reviewing items, updating quantities, and initiating the Shopify checkout flow.
+- **Cart Drawer**: Side-panel for reviewing items, updating quantities, and initiating the checkout flow via **Stripe**.

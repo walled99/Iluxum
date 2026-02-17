@@ -1,4 +1,4 @@
-**Version:** 2.0 (Next.js 16 + Tailwind v4 + Shopify Headless)
+**Version:** 3.0 (Next.js 16 + Tailwind v4 + Supabase + Stripe)
 
 ### 1. Modern Styling Architecture (Tailwind v4)
 
@@ -26,14 +26,14 @@ CSS
   --animate-fade-gold: fade-in 0.5s ease-in-out;
 }`
 
-### 2. Shopify Integration Details
+### 2. Supabase & Stripe Integration
 
-Using the provided credentials for high-performance headless fetching via the Storefront API:
+We use **Supabase** for data and **Stripe** for payments:
 
-- **Store Domain:** `iluxum-store.myshopify.com`
-- **Storefront Access Token:** `[REDACTED]`
-- **API Key:** `[REDACTED]`
-- **API Secret (Webhook Security):** `[REDACTED]`
+- **Database**: PostgreSQL on Supabase.
+- **Auth**: Supabase Auth (Email + Next.js Server Components).
+- **Storage**: Supabase Storage for high-res product imagery.
+- **Payments**: Stripe Checkout and Webhooks for order fulfillment.
 
 ---
 
@@ -54,27 +54,24 @@ We will use a **Dynamic Segment Strategy** for localized routing.
     
 - **Directionality:** A top-level provider detects the language and injects `dir="rtl"` or `dir="ltr"` into the `<html>` tag.
 
-### 4. Global State & Cart Strategy (The "Merge" Flow)
+### 4. Global State & Cart Strategy
 
-We use **Zustand v5** with the `persist` middleware to bridge the gap between anonymous browsing and authenticated shopping.
+We use **Zustand v5** with the `persist` middleware to manage the shopping experience.
 
 **The Logic:**
 
-1. **Guest Phase:** User adds items to `localCart` (Zustand/LocalStorage).
-2. **Auth Phase:** User logs in via Shopify Customer API.
-3. **Sync Phase:** * Fetch the "Server Cart" from Shopify via customer query.
-    - Compare `localCart` and `serverCart`.
-    - Trigger `cartLinesAdd` mutation for any unique items in `localCart` that aren't in `serverCart`.
-    - Clear `localCart` and switch the UI to read from the Shopify source-of-truth.
+1. **Local Phase**: User adds items to `localCart` (Zustand/LocalStorage).
+2. **Checkout Phase**: On checkout, the cart is passed to a Stripe Session.
+3. **Fulfillment Phase**: Once payment succeeds, a Stripe Webhook creates the final order in the Supabase `orders` table.
 
 ---
 
 ### 5. Performance & Data Integrity
 
-- **On-Demand Revalidation:** Implementation of a POST route at `/api/revalidate`.
-    - **Trigger:** Shopify Webhooks (collection/update, product/update).
-    - **Security:** Validate HMAC signatures using the `API Secret Key`.
-    - **Action:** `revalidateTag('products')`.
+- **Payments & Webhooks**:
+    - **Stripe Webhook**: `/api/webhooks/stripe`.
+    - **Security**: Validate Stripe signatures using the `WEBHOOK_SECRET`.
+    - **Action**: Create `orders` and `order_items` in the database.
 - **Component Resilience:**
     - **Skeletons:** Every RSC will have a corresponding `loading.tsx` or Suspense fallback using Shadcn Skeletons.
     - **Error Boundaries:** The `FilterSidebar` and `ReviewSection` will be wrapped in separate `ErrorBoundary` components. If Metafields (Reviews) fail, the core "Add to Cart" functionality remains active.
@@ -99,16 +96,16 @@ Plaintext
 │       ├── (shop)/           # Marketing & Product pages
 │       ├── (auth)/           # Login/Register
 │       └── api/
-│           └── revalidate/   # Webhook handler (Uses API Secret)
+│           └── webhooks/     # Stripe Webhook handler
 ├── components/
-│   ├── cart/                 # CartDrawer, CartMergeLogic
+│   ├── cart/                 # CartDrawer
 │   ├── i18n/                 # LocaleSwitcher, DirProvider
-│   └── products/             # ProductCard (with Skeleton)
+│   └── products/             # Product Info, Gallery, Cards
 ├── lib/
-│   ├── shopify/
-│   │   ├── client.ts         # GQL Fetcher (Uses Storefront Token)
-│   │   ├── queries/          # .graphql or template strings
-│   │   └── mutations/        # cartLinesAdd, customerAccessTokenCreate
+│   ├── supabase/
+│   │   ├── client.ts         # Supabase Client
+│   │   ├── queries.ts        # Data fetching (PostgreSQL)
+│   │   └── actions.ts        # Server Actions (Auth, Search)
 │   └── store/
 │       └── useCartStore.ts   # Zustand + Persist
 ├── app/globals.css            # Tailwind v4 @import & @theme config

@@ -1,4 +1,4 @@
-import { getCustomerAction, logoutAction } from "@/lib/shopify/actions";
+import { getCustomerAction, logoutAction } from "@/lib/supabase/actions";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { LogOut, Package, MapPin, User } from "lucide-react";
@@ -124,12 +124,12 @@ export default async function AccountPage({ params }: { params: Promise<{ locale
                 <MapPin className="w-5 h-5 text-accent" />
                 <h2 className="font-heading text-xl font-bold text-ink">Default Shipping</h2>
               </div>
-              {customer.defaultAddress ? (
+              {(customer.defaultAddress as any) ? (
                 <div className="font-body text-sm text-ink/60 space-y-1 leading-relaxed">
-                  <p>{customer.defaultAddress.address1}</p>
-                  {customer.defaultAddress.address2 && <p>{customer.defaultAddress.address2}</p>}
-                  <p>{customer.defaultAddress.city}, {customer.defaultAddress.province} {customer.defaultAddress.zip}</p>
-                  <p>{customer.defaultAddress.country}</p>
+                  <p>{(customer.defaultAddress as any).address1}</p>
+                  {(customer.defaultAddress as any).address2 && <p>{(customer.defaultAddress as any).address2}</p>}
+                  <p>{(customer.defaultAddress as any).city}, {(customer.defaultAddress as any).province} {(customer.defaultAddress as any).zip}</p>
+                  <p>{(customer.defaultAddress as any).country}</p>
                 </div>
               ) : (
                 <p className="font-body text-sm italic text-ink/40">No shipping address provided.</p>

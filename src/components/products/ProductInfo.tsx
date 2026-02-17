@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Product, ProductVariant } from "@/lib/shopify/types";
+import { Product, ProductVariant } from "@/lib/supabase/types";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/lib/store/useCartStore";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";

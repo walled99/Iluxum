@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { registerAction } from "@/lib/shopify/actions";
+import { registerAction } from "@/lib/supabase/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

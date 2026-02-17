@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Image as ShopifyImage } from "@/lib/shopify/types";
+import { Image as ProductImage } from "@/lib/supabase/types";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 
 interface ProductGalleryProps {
-  images: Array<{ node: ShopifyImage }>;
+  images: Array<{ node: ProductImage }>;
 }
 
 export function ProductGallery({ images }: ProductGalleryProps) {

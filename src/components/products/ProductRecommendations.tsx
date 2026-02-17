@@ -1,4 +1,4 @@
-import { getProductRecommendations } from "@/lib/shopify/client";
+import { getProductRecommendations } from "@/lib/supabase/queries";
 import { ProductCard } from "./ProductCard";
 
 export async function ProductRecommendations({ productId, locale }: { productId: string; locale: string }) {

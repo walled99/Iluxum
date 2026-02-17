@@ -5,8 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'cdn.shopify.com',
-        pathname: '/s/files/**',
+        hostname: 'darhflthuvyvjeddvrpg.supabase.co',
       },
       {
         protocol: 'https',

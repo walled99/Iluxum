@@ -1,4 +1,4 @@
-import { getCollections, getSearchResults, getMenu } from "@/lib/shopify/client";
+import { getCollections, searchProducts, getMenu } from "@/lib/supabase/queries";
 import { ProductCard } from "@/components/products/ProductCard";
 import { CategoryCarousel } from "@/components/home/CategoryCarousel";
 import Link from "next/link";
@@ -8,20 +8,19 @@ import { ArrowRight } from "lucide-react";
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   
-  // 1. Fetch categories via a Shopify Menu for full dynamic control
-  // To manage these: Create a menu in Shopify Admin with handle 'home-categories'
-  const categoryMenu = await getMenu("home-categories", 'no-store');
+  // 1. Fetch categories via a menu for full dynamic control
+  const categoryMenu = await getMenu("home-categories");
   
-  // Fetch some "Best Sellers" or featured products (using search for now as a filter)
-  const featuredProducts = await getSearchResults(""); 
+  // Fetch some "Best Sellers" or featured products
+  const { products: featuredProducts } = await searchProducts(""); 
   
   let categoryCollections = categoryMenu
     .filter(item => item.resource?.__typename === 'Collection')
     .map(item => ({
-      id: item.resource.id,
+      id: item.resource!.id,
       title: item.title,
-      handle: item.resource.handle,
-      image: item.resource.image
+      handle: item.resource!.handle,
+      image: item.resource!.image
     }));
 
 
@@ -111,7 +110,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10 lg:gap-x-8 lg:gap-y-16">
-            {featuredProducts.slice(0, 4).map((product) => (
+            {featuredProducts.slice(0, 4).map((product: any) => (
               <ProductCard key={product.id} product={product} locale={locale} />
             ))}
           </div>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useCartStore } from "@/lib/store/useCartStore";
-import { getCheckoutUrlAction } from "@/lib/shopify/actions";
+import { getCheckoutUrlAction } from "@/lib/supabase/actions";
 import {
   Sheet,
   SheetContent,
@@ -18,12 +18,12 @@ import Link from "next/link";
 
 export function CartDrawer({ locale = "eg-en" }: { locale?: string }) {
   const [isRedirecting, setIsRedirecting] = useState(false);
-  const { lines, isCartOpen, setCartOpen, updateQuantity, removeItem, shopifyCartId } = useCartStore();
+  const { lines, isCartOpen, setCartOpen, updateQuantity, removeItem, cartId } = useCartStore();
 
   const handleCheckout = async () => {
     setIsRedirecting(true);
     try {
-      const checkoutUrl = await getCheckoutUrlAction(lines, shopifyCartId);
+      const checkoutUrl = await getCheckoutUrlAction(lines, cartId);
       window.location.href = checkoutUrl;
     } catch (error) {
       console.error("Checkout failed:", error);

@@ -1,4 +1,4 @@
-import { getSearchResults } from "@/lib/shopify/client";
+import { searchProducts } from "@/lib/supabase/queries";
 import { ProductCard } from "@/components/products/ProductCard";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
@@ -12,7 +12,7 @@ export default async function SearchPage({
   const { locale } = await params;
   const { q } = await searchParams;
   const query = q || "";
-  const products = await getSearchResults(query);
+  const { products } = await searchProducts(query);
 
   const breadcrumbs = [
     { label: "Search" }
