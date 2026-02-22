@@ -18,7 +18,7 @@ INSERT INTO menus (handle) VALUES ('main-menu'), ('footer'), ('home-categories')
 INSERT INTO menu_items (menu_id, title, url, sort_order)
 SELECT m.id, 'Home', '/', 1 FROM menus m WHERE m.handle = 'main-menu'
 UNION ALL
-SELECT m.id, 'Shop', '/collections/all', 2 FROM menus m WHERE m.handle = 'main-menu'
+SELECT m.id, 'Shop', '/search', 2 FROM menus m WHERE m.handle = 'main-menu'
 UNION ALL
 SELECT m.id, 'Our Story', '/story', 3 FROM menus m WHERE m.handle = 'main-menu'
 UNION ALL
@@ -40,7 +40,7 @@ INSERT INTO menu_items (menu_id, title, url, resource_type, resource_id, image_u
 SELECT
   m.id,
   c.title,
-  '/collections/' || c.handle,
+  '/collection/' || c.handle,
   'Collection',
   c.id,
   c.image_url,

@@ -20,7 +20,7 @@ export default function Footer({ locale, collectionsMenu = [], conciergeMenu = [
     : [
         { title: "New Arrivals", url: `/${l}/search` },
         { title: "Bedroom", url: `/${l}/collection/bedroom` },
-        { title: "Bathroom", url: `/${l}/collection/bath` },
+        { title: "Bathroom", url: `/${l}/collection/bathroom` },
         { title: "All Products", url: `/${l}/search` },
       ];
 

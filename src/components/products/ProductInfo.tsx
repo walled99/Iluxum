@@ -46,15 +46,32 @@ export function ProductInfo({ product }: ProductInfoProps) {
   return (
     <div className="flex flex-col gap-y-8 px-6 lg:px-0">
       <div className="flex flex-col gap-y-2">
-        <h1 className="font-heading text-4xl lg:text-5xl font-bold text-ink italic leading-tight">
-          {title}
-        </h1>
-        <p className="font-body text-xl font-medium text-accent">
-          {new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: price.currencyCode,
-          }).format(parseFloat(price.amount))}
-        </p>
+        <div className="flex items-center gap-x-3">
+          <h1 className="font-heading text-4xl lg:text-5xl font-bold text-ink italic leading-tight">
+            {title}
+          </h1>
+          {selectedVariant?.compareAtPrice && parseFloat(selectedVariant.compareAtPrice.amount) > parseFloat(selectedVariant.price.amount) && (
+            <span className="bg-accent px-3 py-1 text-[10px] uppercase tracking-widest text-background font-bold h-fit mt-1">
+              Sale
+            </span>
+          )}
+        </div>
+        <div className="flex items-baseline gap-x-3 font-body">
+          <p className="text-xl font-medium text-accent">
+            {new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: price.currencyCode,
+            }).format(parseFloat(price.amount))}
+          </p>
+          {selectedVariant?.compareAtPrice && parseFloat(selectedVariant.compareAtPrice.amount) > parseFloat(selectedVariant.price.amount) && (
+            <p className="text-ink/30 line-through text-base">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: price.currencyCode,
+              }).format(parseFloat(selectedVariant.compareAtPrice.amount))}
+            </p>
+          )}
+        </div>
       </div>
 
       <div className="flex flex-col gap-y-6">

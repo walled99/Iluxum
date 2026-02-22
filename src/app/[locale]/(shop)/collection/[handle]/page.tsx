@@ -20,7 +20,7 @@ export default async function CollectionPage({
   const products = collection.products.edges.map((edge: any) => edge.node);
 
   const breadcrumbs = [
-    { label: "Collections", href: `/${locale}/collections` },
+    { label: "Collections", href: `/${locale}/search` },
     { label: collection.title }
   ];
 

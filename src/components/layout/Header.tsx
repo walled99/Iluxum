@@ -33,6 +33,7 @@ export default function Header({
   const navItems = menuItems.length > 0 
     ? menuItems 
     : [
+        { title: "Shop", url: `/${locale}/search` },
         { title: "Collections", url: `/${locale}/search` },
         { title: "Story", url: `/${locale}/story` },
         { title: "Contact", url: `/${locale}/contact` },

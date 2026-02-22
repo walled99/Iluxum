@@ -24,6 +24,11 @@ export function ProductCard({ product, locale = "eg-en" }: ProductCardProps) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         )}
+        {priceRange.hasComparisonPrice && (
+          <div className="absolute top-4 left-4 bg-accent px-3 py-1 text-[10px] uppercase tracking-widest text-background font-bold shadow-lg">
+            Sale
+          </div>
+        )}
         <div className="absolute inset-0 bg-primary/0 transition-colors duration-300 group-hover:bg-primary/5" />
       </Link>
 
@@ -33,12 +38,22 @@ export function ProductCard({ product, locale = "eg-en" }: ProductCardProps) {
             {title}
           </h3>
         </Link>
-        <p className="font-body text-sm font-medium text-ink/80 ms-0">
-          {new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: price.currencyCode,
-          }).format(parseFloat(price.amount))}
-        </p>
+        <div className="flex items-baseline gap-x-2 font-body text-sm font-medium">
+          <p className="text-ink/80">
+            {new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: price.currencyCode,
+            }).format(parseFloat(price.amount))}
+          </p>
+          {priceRange.hasComparisonPrice && (
+            <p className="text-ink/30 line-through text-xs">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: price.currencyCode,
+              }).format(parseFloat(priceRange.maxVariantPrice.amount))}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

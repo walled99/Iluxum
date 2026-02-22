@@ -47,12 +47,14 @@ function transformProduct(
     availableForSale: v.available_for_sale,
     selectedOptions: v.selected_options || [],
     price: toMoney(v.price, v.currency_code),
+    compareAtPrice: v.compare_at_price ? toMoney(v.compare_at_price, v.currency_code) : null,
   }));
 
   const prices = variants.map((v) => v.price);
   const minPrice = Math.min(...prices);
   const maxPrice = Math.max(...prices);
   const currencyCode = variants[0]?.currency_code || 'EGP';
+  const hasComparisonPrice = variants.some(v => v.compare_at_price && v.compare_at_price > v.price);
 
   return {
     id: row.id,
@@ -69,6 +71,7 @@ function transformProduct(
     priceRange: {
       minVariantPrice: toMoney(minPrice, currencyCode),
       maxVariantPrice: toMoney(maxPrice, currencyCode),
+      hasComparisonPrice,
     },
     variants: toConnection(mappedVariants),
     featuredImage: featured ? toImage(featured.url, featured.alt_text) : toImage(null, ''),

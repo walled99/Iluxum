@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
@@ -26,53 +26,8 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const checkScroll = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setCanScrollLeft(scrollLeft > 10);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
-      
-      // Update active index based on scroll position
-      const itemWidth = scrollContainerRef.current.children[0]?.clientWidth || 0;
-      const index = Math.round(scrollLeft / (itemWidth + 32)); // 32 is the gap (gap-8)
-      setActiveIndex(index);
-    }
-  };
-
-  const scroll = (direction: "left" | "right") => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      const itemWidth = scrollContainerRef.current.children[0]?.clientWidth || 0;
-      const scrollStep = itemWidth + 32; // item width + gap (gap-8)
-
-      if (direction === "right") {
-        if (scrollLeft + clientWidth >= scrollWidth - 10) {
-          // At the end, loop to start
-          scrollContainerRef.current.scrollTo({ left: 0, behavior: "smooth" });
-        } else {
-          scrollContainerRef.current.scrollBy({ left: scrollStep, behavior: "smooth" });
-        }
-      } else {
-        if (scrollLeft <= 10) {
-          // At the start, loop to end
-          scrollContainerRef.current.scrollTo({ left: scrollWidth, behavior: "smooth" });
-        } else {
-          scrollContainerRef.current.scrollBy({ left: -scrollStep, behavior: "smooth" });
-        }
-      }
-    }
-  };
-
-  const scrollTo = (index: number) => {
-    if (scrollContainerRef.current) {
-      const itemWidth = scrollContainerRef.current.children[0]?.clientWidth || 0;
-      scrollContainerRef.current.scrollTo({
-        left: index * (itemWidth + 32),
-        behavior: "smooth"
-      });
-    }
-  };
+  const [isHovered, setIsHovered] = useState(false);
+  const [isTouching, setIsTouching] = useState(false);
 
   const displayCategories = categories.length > 0 
     ? categories 
@@ -83,18 +38,70 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
         image: { url: fallbackImages[idx] || fallbackImages[0] }
       }));
 
-  const [isHovered, setIsHovered] = useState(false);
+  const getItemWidth = useCallback(() => {
+    if (!scrollContainerRef.current?.children[0]) return 0;
+    return (scrollContainerRef.current.children[0] as HTMLElement).offsetWidth;
+  }, []);
+
+  const getGap = () => 24; // gap-6
+
+  const checkScroll = useCallback(() => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+
+      const itemWidth = getItemWidth();
+      const gap = getGap();
+      if (itemWidth > 0) {
+        const index = Math.round(scrollLeft / (itemWidth + gap));
+        setActiveIndex(Math.min(index, displayCategories.length - 1));
+      }
+    }
+  }, [getItemWidth, displayCategories.length]);
+
+  const scroll = useCallback((direction: "left" | "right") => {
+    if (!scrollContainerRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+    const itemWidth = getItemWidth();
+    const gap = getGap();
+    const scrollStep = itemWidth + gap;
+
+    if (direction === "right") {
+      if (scrollLeft + clientWidth >= scrollWidth - 10) {
+        scrollContainerRef.current.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        scrollContainerRef.current.scrollBy({ left: scrollStep, behavior: "smooth" });
+      }
+    } else {
+      if (scrollLeft <= 10) {
+        scrollContainerRef.current.scrollTo({ left: scrollWidth, behavior: "smooth" });
+      } else {
+        scrollContainerRef.current.scrollBy({ left: -scrollStep, behavior: "smooth" });
+      }
+    }
+  }, [getItemWidth]);
+
+  const scrollTo = useCallback((index: number) => {
+    if (!scrollContainerRef.current) return;
+    const itemWidth = getItemWidth();
+    const gap = getGap();
+    scrollContainerRef.current.scrollTo({
+      left: index * (itemWidth + gap),
+      behavior: "smooth"
+    });
+  }, [getItemWidth]);
 
   useEffect(() => {
     checkScroll();
     window.addEventListener("resize", checkScroll);
     return () => window.removeEventListener("resize", checkScroll);
-  }, []);
+  }, [checkScroll]);
 
-  // Subtle Auto-play
+  // Auto-play (pause on hover or touch)
   useEffect(() => {
-    if (isHovered) return;
-    
+    if (isHovered || isTouching) return;
+
     const interval = setInterval(() => {
       if (scrollContainerRef.current) {
         const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
@@ -107,18 +114,19 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [isHovered, displayCategories.length]);
+  }, [isHovered, isTouching, scroll]);
 
   return (
     <section 
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="container-custom space-y-10 py-16 relative overflow-visible"
+      className="container-custom space-y-8 lg:space-y-10 py-16 lg:py-20 relative overflow-visible"
     >
-      <div className="flex justify-between items-end border-b border-ink/5 pb-6">
+      {/* Section Header */}
+      <div className="flex justify-between items-end pb-4 lg:pb-6">
         <div className="space-y-1">
-          <h2 className="font-heading text-4xl lg:text-5xl font-bold text-ink italic leading-tight">
-            Shop By Category
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-ink italic leading-tight">
+            Categories
           </h2>
           <p className="font-body text-[10px] text-ink/40 uppercase tracking-[0.3em] font-bold">
             Curated luxury for every room
@@ -126,21 +134,25 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
         </div>
         <Link 
           href={`/${locale}/search`}
-          className="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-accent hover:text-ink transition-colors flex items-center gap-2 group"
+          className="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-accent hover:text-ink transition-colors duration-300 flex items-center gap-2 group"
         >
           View all 
-          <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
+          <ArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
         </Link>
       </div>
 
       <div className="relative group/carousel -mx-4 px-4 overflow-visible">
-        {/* Navigation Arrows - Modern Glassmorphism */}
+        {/* Navigation Arrows */}
         <div className="absolute inset-y-0 -left-6 -right-6 hidden lg:flex items-center justify-between pointer-events-none z-30">
           <button
             onClick={() => scroll("left")}
             className={cn(
-              "pointer-events-auto w-14 h-14 rounded-full flex items-center justify-center bg-white/60 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-all duration-500 hover:bg-white/90 hover:scale-110 active:scale-95 group/btn",
-              displayCategories.length <= 1 ? "opacity-0 invisible" : "opacity-100 visible"
+              "pointer-events-auto w-14 h-14 rounded-full flex items-center justify-center",
+              "bg-white/70 backdrop-blur-xl border border-white/50",
+              "shadow-[0_8px_32px_rgba(0,0,0,0.08)]",
+              "transition-all duration-500 hover:bg-white hover:scale-110 active:scale-95",
+              "group/btn",
+              displayCategories.length <= 1 ? "opacity-0 invisible" : "opacity-0 group-hover/carousel:opacity-100"
             )}
             aria-label="Scroll left"
           >
@@ -150,8 +162,12 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
           <button
             onClick={() => scroll("right")}
             className={cn(
-              "pointer-events-auto w-14 h-14 rounded-full flex items-center justify-center bg-white/60 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-all duration-500 hover:bg-white/90 hover:scale-110 active:scale-95 group/btn",
-              displayCategories.length <= 1 ? "opacity-0 invisible" : "opacity-100 visible"
+              "pointer-events-auto w-14 h-14 rounded-full flex items-center justify-center",
+              "bg-white/70 backdrop-blur-xl border border-white/50",
+              "shadow-[0_8px_32px_rgba(0,0,0,0.08)]",
+              "transition-all duration-500 hover:bg-white hover:scale-110 active:scale-95",
+              "group/btn",
+              displayCategories.length <= 1 ? "opacity-0 invisible" : "opacity-0 group-hover/carousel:opacity-100"
             )}
             aria-label="Scroll right"
           >
@@ -163,43 +179,72 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
         <div 
           ref={scrollContainerRef}
           onScroll={checkScroll}
-          className="flex overflow-x-auto gap-8 pb-10 snap-x snap-mandatory no-scrollbar cursor-grab active:cursor-grabbing scroll-smooth"
+          onTouchStart={() => setIsTouching(true)}
+          onTouchEnd={() => setTimeout(() => setIsTouching(false), 2000)}
+          className="flex overflow-x-auto gap-6 pb-6 snap-x snap-mandatory no-scrollbar scroll-smooth"
+          style={{ 
+            WebkitOverflowScrolling: "touch",
+            touchAction: "pan-x",
+          }}
         >
-          {displayCategories.map((item, idx) => (
-            <Link
-              key={item.id}
-              href={`/${locale}/collection/${item.handle}`}
-              className="relative flex-none w-[80vw] sm:w-[40vw] lg:w-[calc(33.33%-1.5rem)] xl:w-[calc(25%-1.5rem)] aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-surface snap-start shadow-[0_20px_50px_rgba(0,0,0,0.05)] group/card"
-            >
-              <Image
-                src={item.image?.url || fallbackImages[0]}
-                alt={item.title}
-                fill
-                className="object-cover transition-transform duration-1000 group-hover/card:scale-105"
-              />
-              <div className="absolute inset-0 bg-black/30 group-hover/card:bg-black/40 transition-colors duration-500" />
-              <div className="absolute inset-0 flex items-center justify-center p-8">
-                <h3 className="font-heading text-3xl md:text-4xl font-bold text-white text-center drop-shadow-2xl translate-y-2 opacity-90 transition-all duration-500 group-hover/card:translate-y-0 group-hover/card:opacity-100 uppercase italic tracking-wider">
-                  {item.title}
-                </h3>
-              </div>
-            </Link>
-          ))}
+          {displayCategories.map((item, idx) => {
+            const isActive = idx === activeIndex;
+            return (
+              <Link
+                key={item.id}
+                href={`/${locale}/collection/${item.handle}`}
+                className={cn(
+                  "relative flex-none aspect-[4/5] overflow-hidden bg-surface snap-center group/card",
+                  "w-[75vw] sm:w-[45vw] lg:w-[calc(33.33%-1.25rem)] xl:w-[calc(25%-1.125rem)]",
+                  "rounded-3xl lg:rounded-[2rem]",
+                  "shadow-[0_15px_40px_rgba(0,0,0,0.06)]",
+                  "transition-all duration-700 ease-out",
+                  isActive ? "scale-100 shadow-[0_20px_50px_rgba(0,0,0,0.1)]" : "scale-[0.97] md:scale-100 opacity-90 md:opacity-100"
+                )}
+              >
+                <Image
+                  src={item.image?.url || fallbackImages[0]}
+                  alt={item.title}
+                  fill
+                  className="object-cover transition-transform duration-1000 ease-out group-hover/card:scale-110"
+                  sizes="(max-width: 640px) 75vw, (max-width: 1024px) 45vw, 25vw"
+                />
+
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover/card:from-black/70 transition-colors duration-700" />
+
+                {/* Content */}
+                <div className="absolute inset-0 flex flex-col items-center justify-end p-8 lg:p-10">
+                  <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-white text-center drop-shadow-2xl uppercase italic tracking-wide transition-transform duration-500 group-hover/card:-translate-y-2">
+                    {item.title}
+                  </h3>
+
+                  {/* View Collection CTA — visible on hover */}
+                  <span className="mt-4 font-body text-[10px] text-white/0 uppercase tracking-[0.25em] font-bold transition-all duration-500 group-hover/card:text-white/80 translate-y-4 group-hover/card:translate-y-0 flex items-center gap-2">
+                    Explore
+                    <ArrowRight className="w-3 h-3" />
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
 
         {/* Progress Indicators */}
-        <div className="flex justify-center items-center gap-4 mt-8">
-          <div className="text-[10px] font-body font-bold text-ink/40 tracking-[0.2em] uppercase">
+        <div className="flex justify-center items-center gap-4 mt-4">
+          <div className="text-[10px] font-body font-bold text-ink/30 tracking-[0.2em] uppercase tabular-nums">
             {activeIndex + 1} / {displayCategories.length}
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-1.5">
             {displayCategories.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => scrollTo(idx)}
                 className={cn(
-                  "w-1.5 h-1.5 rounded-full transition-all duration-500",
-                  activeIndex === idx ? "bg-accent w-6" : "bg-ink/10"
+                  "h-1.5 rounded-full transition-all duration-500 ease-out",
+                  activeIndex === idx 
+                    ? "bg-accent w-8" 
+                    : "bg-ink/10 w-1.5 hover:bg-ink/20"
                 )}
                 aria-label={`Go to slide ${idx + 1}`}
               />

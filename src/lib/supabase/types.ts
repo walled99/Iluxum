@@ -42,6 +42,7 @@ export interface Product {
   priceRange: {
     maxVariantPrice: Money;
     minVariantPrice: Money;
+    hasComparisonPrice: boolean;
   };
   variants: Connection<ProductVariant>;
   featuredImage: Image;
@@ -66,6 +67,7 @@ export interface ProductVariant {
     value: string;
   }[];
   price: Money;
+  compareAtPrice: Money | null;
 }
 
 export interface SEO {
