@@ -56,8 +56,8 @@ export function ProductGallery({ images }: ProductGalleryProps) {
         
         {/* Zoom Hint */}
         {!isZoomed && images.length > 0 && (
-          <div className="absolute bottom-4 right-4 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full">
-            <span className="font-body text-[10px] uppercase tracking-widest text-ink/60 font-bold">
+          <div className="absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm px-3 py-1.5 rounded-full">
+            <span className="font-body text-[10px] uppercase tracking-widest text-primary/60 font-bold">
               Click to zoom
             </span>
           </div>

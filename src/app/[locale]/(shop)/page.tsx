@@ -52,16 +52,16 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           priority
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-ink/10" />
+        <div className="absolute inset-0 bg-primary/30 mix-blend-multiply" />
         <div className="container-custom relative z-10">
           <div className="max-w-3xl space-y-8 animate-fade-gold">
             <div className="space-y-4">
-              <h2 className="font-body text-sm font-bold uppercase tracking-[0.4em] text-background">
+              <h2 className="font-body text-sm font-bold uppercase tracking-[0.4em] text-accent">
                 The Heritage Collection
               </h2>
-              <h1 className="font-heading text-6xl md:text-8xl lg:text-[7rem] text-background font-bold italic leading-[1.1]">
+              <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl text-background font-bold leading-[1.1] tracking-tight">
                 Pure <br /> 
-                <span className="ps-20 lg:ps-32">Elegance</span>
+                <span className="ps-12 lg:ps-20">Elegance</span>
               </h1>
             </div>
             <p className="font-body text-lg text-background/90 max-w-xl leading-relaxed">
@@ -70,7 +70,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <div className="pt-4">
               <Link 
                 href={`/${locale}/search`}
-                className="inline-flex items-center gap-x-4 bg-background text-ink px-10 py-5 font-body text-sm font-bold uppercase tracking-[0.2em] hover:bg-accent hover:text-background transition-all duration-500 shadow-2xl"
+                className="inline-flex items-center gap-x-4 bg-background text-primary px-10 py-5 font-body text-sm font-bold uppercase tracking-[0.2em] hover:bg-accent hover:text-primary transition-all duration-500 shadow-2xl"
               >
                 Shop Collection
                 <ArrowRight className="w-5 h-5" />
@@ -94,16 +94,16 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <div className="container-custom space-y-16">
           <div className="flex flex-col md:flex-row justify-between items-end gap-y-6">
             <div className="space-y-4">
-              <h2 className="font-heading text-4xl lg:text-6xl font-bold text-ink italic leading-tight">
+              <h2 className="font-heading text-3xl lg:text-5xl font-bold text-primary leading-tight">
                 New Arrivals
               </h2>
-              <p className="font-body text-sm text-ink/40 uppercase tracking-[0.2em]">
+              <p className="font-body text-sm text-primary/60 uppercase tracking-[0.2em]">
                 The latest in luxury sustainable fashion
               </p>
             </div>
             <Link 
               href={`/${locale}/search`}
-              className="font-body text-xs font-bold uppercase tracking-widest text-accent border-b border-accent pb-1 hover:text-ink hover:border-ink transition-all"
+              className="font-body text-xs font-bold uppercase tracking-widest text-accent border-b border-accent pb-1 hover:text-primary hover:border-primary transition-all duration-300"
             >
               View All Products
             </Link>
@@ -133,17 +133,17 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
               <h2 className="font-body text-xs font-bold uppercase tracking-[0.4em] text-accent">
                 Our Heritage
               </h2>
-              <h3 className="font-heading text-4xl lg:text-6xl font-bold text-ink italic leading-tight">
+              <h3 className="font-heading text-3xl lg:text-5xl font-bold text-primary leading-tight">
                 A Thread <br /> of Time
               </h3>
             </div>
-            <p className="font-body text-lg text-ink/70 leading-relaxed italic">
+            <p className="font-body text-lg text-primary/80 leading-relaxed italic">
               "We believe that luxury shouldn't cost the earth. Our mission is to weave sustainability into the very fabric of everyday elegance."
             </p>
             <div className="pt-4">
               <Link 
                 href={`/${locale}/story`}
-                className="inline-flex items-center gap-x-4 border border-ink px-10 py-5 font-body text-sm font-bold uppercase tracking-[0.2em] hover:bg-primary hover:text-background hover:border-primary transition-all duration-500"
+                className="inline-flex items-center gap-x-4 bg-primary text-background px-10 py-5 font-body text-sm font-bold uppercase tracking-[0.2em] hover:bg-accent hover:text-primary transition-all duration-500 shadow-xl hover:shadow-2xl"
               >
                 Discover The Story
               </Link>

@@ -41,7 +41,7 @@ export default function Header({
       ];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-surface bg-background/80 backdrop-blur-md py-4">
+    <header className="sticky top-0 z-40 border-b border-primary/10 bg-background/90 backdrop-blur-md py-4 shadow-sm transition-all duration-300">
       <CartSyncProvider customerAccessToken={customerAccessToken} />
       <div className="container-custom flex items-center justify-between gap-x-8">
         <Link href={`/${locale}`} className="font-heading text-2xl font-bold text-primary italic shrink-0">

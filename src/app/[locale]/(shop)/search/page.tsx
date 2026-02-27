@@ -23,10 +23,10 @@ export default async function SearchPage({
       <div className="flex flex-col gap-y-8 lg:gap-y-12">
         <Breadcrumbs items={breadcrumbs} locale={locale} />
         <header className="flex flex-col gap-y-4">
-          <h1 className="font-heading text-4xl lg:text-6xl font-bold text-ink italic leading-tight">
+          <h1 className="font-heading text-4xl lg:text-6xl font-bold text-primary italic leading-tight">
             Search Results
           </h1>
-          <p className="font-body text-sm text-ink/60 uppercase tracking-widest">
+          <p className="font-body text-sm text-primary/60 uppercase tracking-widest">
             {products.length} {products.length === 1 ? "result" : "results"} for "{query}"
           </p>
         </header>
@@ -39,11 +39,11 @@ export default async function SearchPage({
           </div>
         ) : (
           <div className="py-20 flex flex-col items-center justify-center text-center gap-y-6">
-            <p className="font-body text-lg italic text-ink/40">
+            <p className="font-body text-lg italic text-primary/60">
               We couldn't find any products matching your search.
             </p>
-            <div className="max-w-md w-full border-t border-surface pt-6">
-              <p className="font-heading text-xs uppercase tracking-[0.2em] font-bold text-ink/20">
+            <div className="max-w-md w-full border-t border-primary/10 pt-6">
+              <p className="font-heading text-xs uppercase tracking-[0.2em] font-bold text-primary/40">
                 Suggestions: Try using more general terms or check your spelling.
               </p>
             </div>

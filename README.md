@@ -12,6 +12,12 @@ A premium e-commerce storefront built with Next.js 16 and **Supabase**.
 2. **Environment Variables**: Add `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` to `.env.local`.
 3. **Webhook Sync**: Automatically create records in the `orders` and `order_items` tables in Supabase when a payment succeeds.
 4. **Order History**: Update the `/account` page to display real customer orders from Supabase.
+15: 
+16: ## Design System
+17: 
+18: - **Colors**: Deep Navy (`#121442`) and Champagne Gold (`#C2AC82`).
+19: - **Typography**: Cormorant Garamond (Headings) and Inter (Body).
+20: - **Aesthetic**: Modern Luxury with refined scaling and subtle glassmorphism.
 
 ## Features
 

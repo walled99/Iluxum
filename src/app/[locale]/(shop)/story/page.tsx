@@ -36,7 +36,7 @@ export default function StoryPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="font-heading text-6xl lg:text-9xl font-bold text-background italic leading-none drop-shadow-2xl"
+            className="font-heading text-5xl lg:text-7xl font-bold text-background leading-none drop-shadow-2xl tracking-tighter"
           >
             The Heritage
           </motion.h1>
@@ -54,14 +54,14 @@ export default function StoryPage() {
       {/* Narrative Section 1 */}
       <section className="container-custom py-24 lg:py-40 grid lg:grid-cols-2 gap-20 items-center">
         <motion.div {...fadeInUp} className="space-y-8">
-          <h2 className="font-heading text-4xl lg:text-6xl font-bold text-ink italic leading-tight">
+          <h2 className="font-heading text-3xl lg:text-5xl font-bold text-primary leading-tight">
             Giza 45: <br />The Golden Standard
           </h2>
           <div className="w-20 h-px bg-accent" />
-          <p className="font-body text-sm lg:text-base text-ink/60 leading-relaxed max-w-md">
+          <p className="font-body text-sm lg:text-base text-primary/80 leading-relaxed max-w-md">
             Our journey begins in the alluvial soils of the Nile Delta. Here, specifically in the Giza 45 region, the world's most luxurious long-staple cotton is hand-harvested under the Mediterranean sun. 
           </p>
-          <p className="font-body text-sm lg:text-base text-ink/60 leading-relaxed max-w-md">
+          <p className="font-body text-sm lg:text-base text-primary/80 leading-relaxed max-w-md">
             Only 0.01% of global cotton production meets the Iluxum standard—a fiber so rare, it is often referred to as "The Queen of Egypt."
           </p>
         </motion.div>
@@ -86,7 +86,7 @@ export default function StoryPage() {
         <div className="container-custom max-w-4xl text-center">
           <motion.p 
             {...fadeInUp}
-            className="font-heading text-3xl lg:text-5xl italic leading-tight"
+            className="font-heading text-2xl lg:text-4xl italic leading-tight"
           >
             "Textiles are not just materials; they are the silent companions of our most intimate moments at home."
           </motion.p>
@@ -116,14 +116,14 @@ export default function StoryPage() {
           />
         </motion.div>
         <motion.div {...fadeInUp} className="space-y-8 order-1 lg:order-2">
-          <h2 className="font-heading text-4xl lg:text-6xl font-bold text-ink italic leading-tight">
+          <h2 className="font-heading text-3xl lg:text-5xl font-bold text-primary leading-tight">
             Artisanal <br />Continuity
           </h2>
           <div className="w-20 h-px bg-accent" />
-          <p className="font-body text-sm lg:text-base text-ink/60 leading-relaxed max-w-md">
+          <p className="font-body text-sm lg:text-base text-primary/80 leading-relaxed max-w-md">
             Iluxum bridges centuries-old Egyptian weaving techniques with contemporary European finishing. Our artisans handle every thread with the reverence it deserves, ensuring a 600 GSM weight that feels like a heavy embrace.
           </p>
-          <p className="font-body text-sm lg:text-base text-ink/60 leading-relaxed max-w-md">
+          <p className="font-body text-sm lg:text-base text-primary/80 leading-relaxed max-w-md">
             It takes four weeks to complete a single Iluxum suite—a timeline dictated by quality, not commerce.
           </p>
         </motion.div>
@@ -133,8 +133,8 @@ export default function StoryPage() {
       <section className="py-24 lg:py-40 bg-surface/30">
         <div className="container-custom flex flex-col items-center text-center space-y-12">
           <motion.div {...fadeInUp} className="space-y-4">
-            <h3 className="font-heading text-4xl lg:text-6xl font-bold text-ink italic">Experience the Touch</h3>
-            <p className="font-body text-sm text-ink/40 uppercase tracking-[0.2em]">Crafted for the few who know the difference</p>
+            <h3 className="font-heading text-3xl lg:text-5xl font-bold text-primary">Experience the Touch</h3>
+            <p className="font-body text-sm text-primary/60 uppercase tracking-[0.2em]">Crafted for the few who know the difference</p>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}

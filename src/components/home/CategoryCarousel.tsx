@@ -125,16 +125,16 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
       {/* Section Header */}
       <div className="flex justify-between items-end pb-4 lg:pb-6">
         <div className="space-y-1">
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-ink italic leading-tight">
+          <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-primary leading-tight">
             Categories
           </h2>
-          <p className="font-body text-[10px] text-ink/40 uppercase tracking-[0.3em] font-bold">
+          <p className="font-body text-[10px] text-primary/40 uppercase tracking-[0.3em] font-bold">
             Curated luxury for every room
           </p>
         </div>
         <Link 
           href={`/${locale}/search`}
-          className="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-accent hover:text-ink transition-colors duration-300 flex items-center gap-2 group"
+          className="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-accent hover:text-primary transition-colors duration-300 flex items-center gap-2 group"
         >
           View all 
           <ArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
@@ -156,22 +156,22 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
             )}
             aria-label="Scroll left"
           >
-            <ChevronLeft className="w-6 h-6 text-ink transition-transform group-hover/btn:-translate-x-0.5" />
+            <ChevronLeft className="w-6 h-6 text-primary transition-transform group-hover/btn:-translate-x-0.5" />
           </button>
 
           <button
             onClick={() => scroll("right")}
             className={cn(
               "pointer-events-auto w-14 h-14 rounded-full flex items-center justify-center",
-              "bg-white/70 backdrop-blur-xl border border-white/50",
-              "shadow-[0_8px_32px_rgba(0,0,0,0.08)]",
-              "transition-all duration-500 hover:bg-white hover:scale-110 active:scale-95",
+              "bg-background/80 backdrop-blur-xl border border-primary/10",
+              "shadow-[0_8px_32px_rgba(18,20,66,0.08)]",
+              "transition-all duration-500 hover:bg-background hover:scale-110 active:scale-95 group-hover/btn:border-accent/40",
               "group/btn",
               displayCategories.length <= 1 ? "opacity-0 invisible" : "opacity-0 group-hover/carousel:opacity-100"
             )}
             aria-label="Scroll right"
           >
-            <ChevronRight className="w-6 h-6 text-ink transition-transform group-hover/btn:translate-x-0.5" />
+            <ChevronRight className="w-6 h-6 text-primary transition-transform group-hover/btn:translate-x-0.5" />
           </button>
         </div>
 
@@ -197,9 +197,9 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
                   "relative flex-none aspect-[4/5] overflow-hidden bg-surface snap-center group/card",
                   "w-[75vw] sm:w-[45vw] lg:w-[calc(33.33%-1.25rem)] xl:w-[calc(25%-1.125rem)]",
                   "rounded-3xl lg:rounded-[2rem]",
-                  "shadow-[0_15px_40px_rgba(0,0,0,0.06)]",
+                  "shadow-[0_15px_40px_rgba(18,20,66,0.06)]",
                   "transition-all duration-700 ease-out",
-                  isActive ? "scale-100 shadow-[0_20px_50px_rgba(0,0,0,0.1)]" : "scale-[0.97] md:scale-100 opacity-90 md:opacity-100"
+                  isActive ? "scale-100 shadow-[0_20px_50px_rgba(18,20,66,0.1)] group-hover/card:shadow-[0_0_20px_rgba(194,172,130,0.3)]" : "scale-[0.97] md:scale-100 opacity-90 md:opacity-100"
                 )}
               >
                 <Image
@@ -215,7 +215,7 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-end p-8 lg:p-10">
-                  <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-white text-center drop-shadow-2xl uppercase italic tracking-wide transition-transform duration-500 group-hover/card:-translate-y-2">
+                  <h3 className="font-heading text-xl sm:text-2xl lg:text-3xl font-bold text-white text-center drop-shadow-2xl uppercase tracking-wide transition-transform duration-500 group-hover/card:-translate-y-2">
                     {item.title}
                   </h3>
 
@@ -232,7 +232,7 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
 
         {/* Progress Indicators */}
         <div className="flex justify-center items-center gap-4 mt-4">
-          <div className="text-[10px] font-body font-bold text-ink/30 tracking-[0.2em] uppercase tabular-nums">
+          <div className="text-[10px] font-body font-bold text-primary/30 tracking-[0.2em] uppercase tabular-nums">
             {activeIndex + 1} / {displayCategories.length}
           </div>
           <div className="flex gap-1.5">
@@ -244,7 +244,7 @@ export function CategoryCarousel({ categories, locale, fallbackImages }: Categor
                   "h-1.5 rounded-full transition-all duration-500 ease-out",
                   activeIndex === idx 
                     ? "bg-accent w-8" 
-                    : "bg-ink/10 w-1.5 hover:bg-ink/20"
+                    : "bg-primary/10 w-1.5 hover:bg-primary/20"
                 )}
                 aria-label={`Go to slide ${idx + 1}`}
               />

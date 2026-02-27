@@ -40,7 +40,7 @@ export default async function CollectionPage({
           />
           <div className="absolute inset-0 bg-primary/20 backdrop-blur-[2px]" />
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-            <h1 className="font-heading text-5xl lg:text-7xl font-bold text-background italic leading-tight drop-shadow-2xl">
+            <h1 className="font-heading text-4xl lg:text-6xl font-bold text-background leading-tight drop-shadow-2xl">
               {collection.title}
             </h1>
             {collection.description && (
@@ -54,11 +54,11 @@ export default async function CollectionPage({
 
       {!collection.image && (
         <header className="container-custom pt-12 lg:pt-20 flex flex-col gap-y-4">
-          <h1 className="font-heading text-4xl lg:text-6xl font-bold text-ink italic leading-tight">
+          <h1 className="font-heading text-3xl lg:text-5xl font-bold text-primary leading-tight">
             {collection.title}
           </h1>
           {collection.description && (
-            <p className="max-w-3xl font-body text-sm lg:text-base text-ink/60 leading-relaxed uppercase tracking-wider">
+            <p className="max-w-3xl font-body text-sm lg:text-base text-primary/60 leading-relaxed uppercase tracking-wider">
               {collection.description}
             </p>
           )}
@@ -74,7 +74,7 @@ export default async function CollectionPage({
           </div>
         ) : (
           <div className="py-20 flex flex-col items-center justify-center text-center gap-y-6">
-            <p className="font-body text-lg italic text-ink/40">
+            <p className="font-body text-lg italic text-primary/40">
               No products found in this collection.
             </p>
           </div>

@@ -34,19 +34,19 @@ export function ProductCard({ product, locale = "eg-en" }: ProductCardProps) {
 
       <div className="flex flex-col gap-y-1 ps-4 pb-4">
         <Link href={`/${locale}/product/${handle}`}>
-          <h3 className="font-heading text-lg leading-tight text-ink transition-colors hover:text-accent">
+          <h3 className="font-heading text-lg leading-tight text-primary transition-colors hover:text-accent">
             {title}
           </h3>
         </Link>
         <div className="flex items-baseline gap-x-2 font-body text-sm font-medium">
-          <p className="text-ink/80">
+          <p className="text-primary/80">
             {new Intl.NumberFormat("en-US", {
               style: "currency",
               currency: price.currencyCode,
             }).format(parseFloat(price.amount))}
           </p>
           {priceRange.hasComparisonPrice && (
-            <p className="text-ink/30 line-through text-xs">
+            <p className="text-primary/40 line-through text-xs">
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: price.currencyCode,

@@ -1,4 +1,4 @@
-import { Playfair_Display, Inter } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import { DirProvider } from "@/components/i18n/DirProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -7,9 +7,10 @@ import "../globals.css";
 import { cookies } from "next/headers";
 import { getMenu } from "@/lib/supabase/queries";
 
-const playfair = Playfair_Display({
+const cormorant = Cormorant_Garamond({
   variable: "--font-heading",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const inter = Inter({
@@ -116,7 +117,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={lang} dir={dir} className="selection:bg-accent/30">
-      <body className={`${playfair.variable} ${inter.variable} antialiased`}>
+      <body className={`${cormorant.variable} ${inter.variable} antialiased`}>
         <DirProvider dir={dir}>
           <Header 
             locale={locale} 

@@ -49,10 +49,10 @@ export default function FAQPage() {
       {/* Hero */}
       <section className="bg-surface py-20 lg:py-32">
         <div className="container-custom flex flex-col items-center text-center space-y-6">
-          <h1 className="font-heading text-5xl lg:text-7xl font-bold text-ink italic leading-tight">
+          <h1 className="font-heading text-4xl lg:text-6xl font-bold text-primary leading-tight">
             Assistance & Inquiries
           </h1>
-          <p className="font-body text-lg text-ink/60 max-w-2xl leading-relaxed">
+          <p className="font-body text-lg text-primary/80 max-w-2xl leading-relaxed">
             Finding the answers you need to ensure your Iluxum experience is seamless.
           </p>
         </div>
@@ -63,7 +63,7 @@ export default function FAQPage() {
           {faqs.map((group, idx) => (
             <div key={idx} className="space-y-8">
               <div className="flex items-center gap-x-6">
-                <h2 className="font-heading text-2xl font-bold text-ink italic whitespace-nowrap">
+                <h2 className="font-heading text-2xl font-bold text-primary italic whitespace-nowrap">
                   {group.category}
                 </h2>
                 <div className="h-px w-full bg-surface" />
@@ -72,10 +72,10 @@ export default function FAQPage() {
               <Accordion type="single" collapsible className="w-full">
                 {group.questions.map((item, qIdx) => (
                   <AccordionItem key={qIdx} value={`item-${idx}-${qIdx}`} className="border-surface py-2">
-                    <AccordionTrigger className="font-heading text-lg font-bold text-ink hover:text-accent hover:no-underline text-start py-6">
+                    <AccordionTrigger className="font-heading text-lg font-bold text-primary hover:text-accent hover:no-underline text-start py-6">
                       {item.q}
                     </AccordionTrigger>
-                    <AccordionContent className="font-body text-ink/70 text-base leading-relaxed pb-6 pr-12">
+                    <AccordionContent className="font-body text-primary/80 text-base leading-relaxed pb-6 pr-12">
                       {item.a}
                     </AccordionContent>
                   </AccordionItem>
@@ -88,14 +88,14 @@ export default function FAQPage() {
 
       {/* Support CTA */}
       <section className="container-custom">
-        <div className="bg-ink p-16 lg:p-24 flex flex-col items-center text-center space-y-8">
-           <h2 className="font-heading text-4xl lg:text-5xl font-bold text-background italic">
+        <div className="bg-primary p-16 lg:p-24 flex flex-col items-center text-center space-y-8">
+           <h2 className="font-heading text-3xl lg:text-4xl font-bold text-background leading-tight">
              Still Have Questions?
            </h2>
-           <p className="font-body text-background/60 max-w-lg">
+           <p className="font-body text-background/80 max-w-lg">
              Our concierge is available for personalized assistance regarding selection, sizing, or care.
            </p>
-           <button className="bg-accent text-background px-12 py-5 font-body text-sm font-bold uppercase tracking-[0.2em] hover:bg-background hover:text-ink transition-all">
+           <button className="bg-accent text-primary px-12 py-5 font-body text-sm font-bold uppercase tracking-[0.2em] hover:bg-background hover:text-primary transition-all">
              Contact Advisor
            </button>
         </div>

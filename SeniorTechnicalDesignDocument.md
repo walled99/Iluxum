@@ -19,7 +19,7 @@ CSS
   --color-ink: #1A1A1A;
 
   /* Typography Strategy */
-  --font-heading: "Playfair Display", serif;
+  --font-heading: "Cormorant Garamond", serif;
   --font-body: "Inter", sans-serif;
 
   /* Luxury Animations */

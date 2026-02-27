@@ -19,7 +19,7 @@ Iluxum is a luxury e-commerce storefront built with Next.js 16 (App Router), Tai
 
 ## Design System
 - **Colors**: Deep Navy (`#121442`), Champagne Gold (`#C2AC82`).
-- **Typography**: Playfair Display (Heading), Inter (Body).
+- **Typography**: Cormorant Garamond (Heading), Inter (Body).
 - **Layout**: Strict use of Logical Properties for RTL/LTR.
 
 ## Core Features
@@ -41,6 +41,8 @@ Iluxum is a luxury e-commerce storefront built with Next.js 16 (App Router), Tai
 - Dynamic Header/Footer synced with Supabase Menus.
 - Product & Collection data rewired to Supabase tables.
 - Image storage configured in Supabase Storage.
+- **UI/UX Overhaul**: Premium Deep Navy & Champagne Gold palette implemented.
+- **Typography Refinement**: Switched to Cormorant Garamond and balanced title scaling.
 
 **Phase 3 (Next):**
 - Stripe Checkout integration and Order history sync.
